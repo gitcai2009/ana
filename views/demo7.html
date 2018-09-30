@@ -1,0 +1,309 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>phone左菜单</title>
+    <script type="text/javascript" src="../public/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.6&key=71d8a6e1b848de01cb229877adb1c369"></script>
+    <style type="text/css">
+        html, body {
+            margin: 0;
+            padding:0;
+            height: 100%;
+            width: 100%;
+        }
+        /*左导航栏*/
+        .menu {
+            background-color: #4a4c48;
+            position: fixed;
+            bottom:0;
+            left:0;
+            right:0;
+            width:100%;
+            height: 56px;
+            box-shadow: 0 -1px 3px #636163;
+            z-index: 99999;
+        }
+        .menu_top{
+            float: left;
+            padding: 0 10px;
+        }
+        .menu_bottom{
+            float: right;
+            padding: 0 10px;
+        }
+        .icon{
+            position: static;
+            display:inline;
+            text-align: center;
+            padding: 7px 0;
+            width: 50px;
+            float: left;
+            -webkit-filter: invert(100%);
+            filter: invert(100%);
+        }
+        .icon a{
+            display:block;
+            padding: 0 5px;
+            color: #2e3138;
+            text-decoration:none;
+        }
+        .icon img{
+            width: 28px;
+            height: 28px;
+            vertical-align: middle
+        }
+        .icon span{
+            position: relative;
+            font-size:10px;
+            font-weight: 600;
+            top: -4px;
+        }
+        .icon a:hover{
+            transform: scale(1.1);
+            -ms-transform:scale(1.1);
+            -moz-transform:scale(1.1);
+            -webkit-transform:scale(1.1);
+            -webkit-filter: invert(50%);
+            filter: invert(50%);
+        }
+        .click_area{
+            background-color: rgba(246, 246, 246, 0.8);
+            -webkit-filter: invert(0%);
+            filter: invert(0%);
+        }
+
+        .menu_area{
+            list-style-type:none;
+            position: fixed;
+            width: 100%;
+            display: none;
+            z-index: 98888;
+        }
+        .menu_area_title{
+            background-color: rgb(150, 185, 125);
+            border: 1px solid rgba(74, 76, 72, 0.9);
+            padding: 6px 10px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #f6e8f6;
+            text-align: left;
+        }
+        .menu_area_title_icon{
+            float: right;
+            cursor: pointer;
+        }
+        .menu_area_title_icon img{
+            width: 20px;
+            height: 20px;
+            -webkit-filter: invert(20%);
+            filter: invert(20%);
+        }
+        .menu_area_body{
+            background-color: rgba(54, 54, 59, 0.8);
+            border-right: 1px solid #3f3f40;
+            z-index: 98888;
+            color: #f9f9ff;
+            width: 100%;
+            text-align: left;
+        }
+        .menu_area_cell{
+            width: 100%;
+            background-color: rgba(54, 54, 59, 0.8);
+            float: left;
+        }
+        .menu_area a{
+            text-decoration:none;
+            color: #f9f9ff;
+            display: block;
+            width: calc(100% - 25px);
+            padding-left: 25px;
+            line-height: 38px;
+        }
+        .menu_area a:hover {
+            background-color: rgba(250, 95, 103, 0.5);
+        }
+
+        .area_form{
+            position: absolute;
+            width: 36%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: 0 auto;
+            display: none;
+            z-index: 99999;
+        }
+        .setting-top{
+            position: absolute;
+            width: 100%;
+            margin: 0;
+            border-radius: 15px;
+            padding: 0 0 30px 0;
+            background: #e0e3dd;
+            box-shadow: 0 0 10px 1px #636163;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .setting-top form{
+            margin: auto;
+            width: 90%;
+        }
+        .setting-top h1 {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff6f9;
+            background-color: #2e3138;
+            padding: 10px 0 10px 0 ;
+            margin: 0 0 10px 0;
+            border-radius:15px 15px 0  0;
+        }
+        .setting-top input[type="text"],input[type="number"]{
+            border: #bfbdba 1px solid;
+            background: #fbfbfb;
+            float: left;
+            font-size: 1em;
+            line-height: 1.5em;
+            width:100%;
+            height: 35px;
+            text-align: left;
+            border-radius: 3px;
+            margin: 5px 0 5px 0 ;
+        }
+        .submit_one, .button_two{
+            color: #fff;
+            border:1px solid #0bd38a;
+            background: #0bd38a;
+            height: 36px;
+            width: 49%;
+            margin: 5px 0 0 0;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight:bold;
+        }
+        .submit_one:hover,button_two:hover{
+            background:none;
+            border: 1px solid #0bd38a;
+            color: #0bd38a;
+        }
+
+        #switch {
+            background-color: #f7f7f7;
+            position: fixed;
+            width: 35px;
+            height: 35px;
+            line-height: 31px;
+            left: 60px;
+            bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #a2a2a2;
+            text-align:center;
+            z-index: 59999;
+        }
+        #switch img{
+            vertical-align: middle
+        }
+        #container {
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 50px;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="menu">
+    <div class="menu_top">
+        <div class="icon">
+            <a href="#">
+                <img src="../public/images/homess.png" alt="主页">
+                <span>主页</span>
+            </a>
+        </div>
+        <div id="area" class="icon">
+            <a href="#">
+                <img src="../public/images/menu.png" alt="区域">
+                <span>区域</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="menu_bottom">
+        <div class="icon">
+            <a href="#">
+                <img src="../public/images/setting.png" alt="设置">
+                <span>设置</span>
+            </a>
+        </div>
+        <div class="icon">
+            <a href="#">
+                <img src="../public/images/exit.png" alt="退出">
+                <span>退出</span>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="menu_area">
+    <div class="menu_area_title">
+        <span>区域</span>
+        <div  class="menu_area_title_icon">
+            <img src="../public/images/add.png" alt="添加区域">
+        </div>
+    </div>
+    <div class="menu_area_body">
+            <div class="menu_area_cell"><a href="#">海口区</a></div>
+            <div class="menu_area_cell"><a href="#">琼海区</a></div>
+            <div class="menu_area_cell"><a href="#">三亚区</a></div>
+            <div class="menu_area_cell"><a href="#">东方区</a></div>
+            <div class="menu_area_cell"><a href="#">儋州区</a></div>
+    </div>
+</div>
+<div class="area_form">
+    <div class="setting-top">
+        <h1>添加区域</h1>
+        <form name="form3" method="post">
+            <input type="text"  class="input_text" name="areaname" placeholder="填写区域名称" required="required">
+            <br>
+            <input type="submit" class="submit_one" value="添加">
+            <input type="button" class="button_two" value="取消"/>
+        </form>
+    </div>
+</div>
+
+<div id='container'></div>
+
+<div id="switch" >
+    <a href="#">
+        <img border="0" src="../public/images/images.png" alt="切换">
+    </a>
+</div>
+<script type="text/javascript">
+    var map = new AMap.Map('container', {
+        zoom:8,//级别
+        center: [110.1, 19.1],//中心点坐标
+        viewMode:'2D',//使用2D视图
+        resizeEnable: true//是否监控地图容器尺寸变化
+    });
+    map.setFitView();
+
+    $(document).ready(function() {
+        $("#area").click(function () {
+            $(".menu_area").toggle();
+            $("#area").toggleClass("click_area");
+        });
+
+        $(".menu_area_title_icon").click(function(){
+            $(".area_form").slideDown();
+        });
+        $(".button_two").click(function(){
+            $(".area_form").slideUp();
+        });
+    });
+</script>
+</body>
+</html>

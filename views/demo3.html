@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>删除页</title>
+<script type="text/javascript" src="../public/jquery-3.3.1.js"></script>
+<style type="text/css">
+    html, body {
+        margin: 0;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+    }
+    #now{
+        list-style-type:none;
+        position: static;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 40px;
+        width: 100%;
+        line-height:30px;
+        background-color: rgba(0, 0, 0, 0.75);
+    }
+    #now ul {
+        list-style-type:none;
+        margin:0;
+        padding:0;
+        overflow:hidden;
+    }
+    #now li {
+        float:left;
+    }
+    #now a:link,a:visited {
+        display:block;
+        width:100px;
+        color:#FFFFFF;
+        text-align:center;
+        padding:5px;
+        text-decoration:none;
+        text-transform:uppercase;
+    }
+    #now a:hover,a:active {
+        transition: 0.4s;
+        font-weight:bold;
+        background-color: #fff6f9;
+        color: #090909;
+    }
+
+    #subject{
+        position: absolute;
+        top: 40px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+    #div1{
+        position:absolute;
+        width:50%;
+        /*height:50%;*/
+        background-color: rgb(240, 96, 96);
+        top: 0;
+        left: 0;
+        bottom: 0;
+        text-align: center;
+    }
+    #div2{
+        position:absolute;
+        width:50%;
+        /*height:50%;*/
+        background-color:rgb(250, 152, 125);
+        top: 0;
+        left: 50%;
+        right: 0;
+        bottom: 0;
+        text-align: center;
+    }
+    .diva{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity:0.8;
+        vertical-align:middle
+    }
+    .diva img{
+        width: 100px;
+        height: 60px;
+        margin-top: 20%;
+    }
+    .diva:hover{
+        transition: 0.5s;
+        margin-top: -15px;
+    }
+
+    .setting-form{
+        position: absolute;
+        margin:0;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 99999;
+        background: rgb(114, 204, 167);
+        display: none;
+    }
+    .setting-deletes{
+        position: absolute;
+        margin: auto;
+        top: 20px;
+        right: 20px;
+        width: 30px;
+        height: 30px;
+    }
+    .setting-deletes img {
+        height: 30px;
+    }
+    .setting-main{
+        position: absolute;
+        width: 36%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: 0 auto;
+    }
+    .setting-top{
+        position: absolute;
+        width: 100%;
+        margin: 0;
+        border-radius: 15px;
+        padding: 0 0 30px 0;
+        background: #e0e3dd;
+        box-shadow: 0 0 10px 1px #636163;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .setting-top form{
+        margin: auto;
+        width: 90%;
+    }
+    .setting-top h1 {
+        text-align: center;
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff6f9;
+        background-color: #2e3138;
+        padding: 10px 0 10px 0 ;
+        margin: 0 0 10px 0;
+        border-radius:15px 15px 0  0;
+    }
+
+    .setting-top input[type="text"],input[type="number"]{
+        border: #bfbdba 1px solid;
+        background: #fbfbfb;
+        float: left;
+        font-size: 1em;
+        line-height: 1.5em;
+        width:100%;
+        height: 35px;
+        text-align: left;
+        border-radius: 3px;
+        margin: 5px 0 5px 0 ;
+    }
+
+    .setting-top input[type="submit"]{
+        color: #fff;
+        border:3px solid #0bd38a;
+        background: #0bd38a;
+        height: 36px;
+        width: 100%;
+        margin: 5px 0 0 0;
+        border-radius: 5px;
+        font-size: 18px;
+        font-weight:bold;
+    }
+    .setting-top input[type="submit"]:hover{
+        background:none;
+        border: 1px solid #0bd38a;
+        color: #0bd38a;
+    }
+
+</style>
+</head>
+<body>
+
+<div id="now">
+    <ul>
+        <li id="now_1"><a href="/place">首页</a></li>
+        <li id="now_4"><a href="/setting ">添加</a></li>
+        <li id="now_3"><a href="/setting/remove">删除</a></li>
+    </ul>
+</div>
+
+<div id="form1"  class="setting-form">
+    <div class="setting-deletes"><img src="../public/images/delete.png"></div>
+    <div class="setting-main" >
+        <div class="setting-top">
+            <h1>删除机器</h1>
+            <form name="form1" method="post">
+                填写要删除的机器编号:<br>
+                <input type="text" name="machineNo" placeholder="10xxxxxx" required="required">
+                <input type="submit" value="删除">
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="form2"  class="setting-form">
+    <div class="setting-deletes"><img src="../public/images/delete.png"></div>
+    <div class="setting-main">
+        <div class="setting-top">
+            <h1>添加机器</h1>
+            <form name="form2" method="post">
+                    <input type="text"  class="input_text" name="name" placeholder="填写机器名称" required="required">
+                    <input type="text"  class="input_text" name="machineNo" placeholder="填写机器编号" required="required">
+                    起始金额:
+                    <input type="number"  class="input_text" name="initialNo" placeholder="0" required="required">
+                    <input type="submit"  class="button" value="添加">
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="subject">
+    <div id="div1">
+        <div class="diva">
+            <img src="../public/images/dian.png">
+            <h2 style="color: #fff6f9;margin:0">添加放置点</h2>
+        </div>
+    </div>
+
+    <div id="div2">
+        <div class="diva">
+            <img src="../public/images/youxi.png">
+            <h2 style="color: #fff6f9;margin:0">添加机器</h2>
+        </div>
+    </div >
+</div >
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#div1").click(function(){
+            $("#form1").slideDown();
+        });
+        $(".setting-deletes").click(function(){
+            $("#form1").slideUp();
+        });
+
+        $("#div2").click(function(){
+            $("#form2").slideDown();
+        });
+        $(".setting-deletes").click(function(){
+            $("#form2").slideUp();
+        });
+    });
+
+    var urlstr = location.href;
+    var urlstatus=false;
+    $("#now a").each(function () {
+        if ((urlstr + '/').indexOf($(this).attr('href')) > -1&&$(this).attr('href')!='') {
+            $(this).addClass('cur'); urlstatus = true;
+        } else {
+            $(this).removeClass('cur');
+        }
+    });
+    if (!urlstatus) {$("#now a").eq(0).addClass('cur'); }
+</script>
+
+</body>
+</html>

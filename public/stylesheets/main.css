@@ -1,0 +1,256 @@
+html, body {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+/*左导航栏*/
+#app {
+    list-style-type:none;
+    background-color: #9ebea8;
+    position: fixed;
+    line-height:30px;
+    height: 100%;
+    width:50px;
+    float:left;
+    box-shadow: 2px 0 5px #636163;
+    z-index: 99999;
+    text-align:center;
+}
+.app-content a:link{  color: #2a6496;text-decoration: none;  }
+.app-content a:visited {  color: #020202;  text-decoration:none;  }
+.app-content a:hover {  color: #bf7c7f;  text-decoration:none;  }
+.app-content a:active{  color: #ee6f7b;}
+
+/*区域菜单栏*/
+#app-set{
+    position:absolute;
+    cursor: pointer;
+    left: 0;
+    bottom: 5px;
+    text-align:center;
+}
+/*图标按钮*/
+.app-set-content{
+    width: 50px;
+    height: 54px;
+    text-align: center;
+}
+.app-set-content a:link,a:visited {
+    display:block;
+    left: 2px;
+    height: 50px;
+    color: #2e3138;
+    text-decoration:none;
+}
+.app-set-content a:hover{
+    background:   -webkit-radial-gradient(#f4ffdf, #b4acaf, #9ebea8 );
+}
+.app-set-content img{
+    vertical-align: middle
+}
+.app-set-content div{
+    position: relative;
+    font-size:12px;
+    bottom: 7px;
+}
+/*切换按钮*/
+#switch {
+    background-color: #f7f7f7;
+    position: fixed;
+    width: 35px;
+    height: 35px;
+    line-height: 31px;
+    left: 60px;
+    bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #a2a2a2;
+    text-align:center;
+    z-index: 99999;
+}
+#switch img{
+    vertical-align: middle
+}
+
+
+/*place页*/
+#container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+}
+/*地图信息栏*/
+#tip {
+    background-color: #fff;
+    padding-left: 10px;
+    padding-right: 10px;
+    position: absolute;
+    font-size: 12px;
+    right: 10px;
+    top: 10px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    line-height: 10px;
+}
+
+
+/*chart页*/
+#main{
+    list-style-type:none;
+    position: absolute;
+    top: 0;
+    left: 50px;
+    width: calc(100% - 50px);
+}
+.lesson{
+    position:static;
+    width: 100%;
+    height: 390px;
+    background: #fafaff;
+}
+.lesson1{
+    position:static;
+    width: 100%;
+    height: 390px;
+    background: rgb(243, 243, 248);
+}
+/*图表对象*/
+#monthSale {
+    position:absolute;
+    width: 850px;
+    height: 400px;
+    right: 0;
+    left: 0;
+    margin-right: auto;
+    margin-left: auto;
+}
+#damageSum{
+    position:absolute;
+    top: 400px;
+    left: 0;
+    right: 0;
+    width: 850px;
+    height: 400px;
+    margin-right: auto;
+    margin-left: auto;
+}
+#saleSum{
+    position:absolute;
+    top: 800px;
+    left: 0;
+    right: 0;
+    width: 850px;
+    height: 400px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/*列表*/
+.chart_bottom{
+    width: 100%;
+    height: auto;
+    text-align: center;
+}
+.table1{
+    position: absolute;
+    width: calc(50% - 16px);
+    padding: 15px 8px;
+    background: rgb(201, 248, 233);
+}
+.table2{
+    position: absolute;
+    width: calc(50% - 16px);
+    left: 50%;
+    padding: 15px 8px;
+    background: rgb(201, 248, 233);
+}
+.customers {
+    width:100%;
+    border-collapse:collapse;
+}
+.customers td, .customers th {
+    font-size:1em;
+    border:1px solid #6982bf;
+    padding:4px 2px;
+}
+.customers th {
+    font-size:1.1em;
+    text-align: center;
+    padding-top:5px;
+    padding-bottom:4px;
+    background-color:#7b9ebf;
+    color:#ffffff;
+}
+.customers tr.alt td {
+    color:#000000;
+    background-color: #d5f2d8;
+}
+
+/*addincoms页*/
+#now{
+    list-style-type:none;
+    position: static;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    width: 100%;
+    line-height:30px;
+    background-color: #cccbc7;
+}
+#now_1{
+    position: absolute;
+    top: 5px;
+    left: 20px;
+}
+#now_2{
+    position:absolute;
+    top: 5px;
+    right: 20px;
+}
+
+#table{
+    position:absolute;
+    top: 40px;
+    left: 0;
+    right: 0;
+    background: rgb(243, 243, 248);
+    text-align:center;
+}
+#table1{
+    position: static;
+}
+
+
+
+
+/*.amap-info-content {
+    font-size: 12px;
+}
+
+#myPageTop {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    margin: 10px auto;
+    padding:6px;
+    font-family: "Microsoft Yahei", "微软雅黑", "Pinghei";
+    font-size: 14px;
+}
+#myPageTop label {
+    margin: 0 20px 0 0;
+    color: #666666;
+    font-weight: normal;
+}
+#myPageTop input {
+    width: 170px;
+}
+#myPageTop .column2{
+    padding-left: 25px;
+}*/

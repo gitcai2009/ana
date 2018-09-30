@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--使移动端达到最佳绘制性能-->
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>首页</title>
+    <link rel="stylesheet" href="../stylesheets/main.css"/>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.6&key=71d8a6e1b848de01cb229877adb1c369"></script>
+    <script src="../javascripts/marker.js"></script>
+</head>
+<body>
+<div id="app">
+    <div class="app-content">
+        <p><a href="place.html">首页</a></p>
+        <p><a href="chart.html">海口区</a></p>
+        <p><a href="chart.html">琼海区</a></p>
+        <p><a href="chart.html">三亚区</a></p>
+        <p><a href="chart.html">东方区</a></p>
+        <p><a href="chart.html">儋州区</a></p>
+    </div>
+
+    <div id="app-set">
+        <div class="app-set-content">
+            <a href="place.html">
+                <img src="../images/add1.png" alt="放置" width="24" height="24">
+                <div>放置</div>
+            </a>
+        </div>
+        <div class="app-set-content">
+            <a href="place.html">
+                <img src="../images/cog.png" alt="区域" width="24" height="24">
+                <div>区域</div>
+            </a>
+        </div>
+        <div class="app-set-content">
+            <a href="place.html">
+                <img border="0" src="../images/exit.png" alt="退出" width="23" height="22">
+                <div >退出</div >
+            </a>
+        </div>
+    </div>
+</div>
+
+<div id='container'></div>
+
+<div id="switch" >
+    <a href="chart.html">
+        <img border="0" src="../images/images.png" alt="切换" width="32" height="32">
+    </a>
+</div>
+
+<div id="tip">
+    <p>总收入:9000</p>
+    <p>坏账:600</p>
+    <p>实收入:8400</p>
+    <p>放置点:6</p>
+</div>
+
+
+<script type="text/javascript">
+    var map = new AMap.Map('container', {
+        zoom:8,//级别
+        center: [110.1, 19.1],//中心点坐标
+        viewMode:'2D',//使用2D视图
+        resizeEnable: true,//是否监控地图容器尺寸变化
+    });
+
+
+    var icon1 = new AMap.Icon({
+        size: new AMap.Size(25,25),
+        imageSize: new AMap.Size(15, 15),  //图标大小
+        image:'../images/mass2.png',
+    });
+
+    var icon = new AMap.Icon({
+        size: new AMap.Size(25,25),
+//        imageOffset: new AMap.Pixel(4,4),
+        imageSize: new AMap.Size(8, 8),  //图标大小
+        image:'../images/mass1.png',
+    });
+    var markers = [];
+//    var marker;
+
+    var infoWindow = new AMap.InfoWindow({
+        offset: new AMap.Pixel(2, -12),
+        closeWhenClickMap:true
+    });
+    for (var i =0;i<provinces.length;i++) {
+        if (provinces[i].style !=3) {
+            var marker = new AMap.Marker({
+                map:map,
+                position: provinces[i].center,
+                title: provinces[i].name,
+                icon: icon,
+                offset:{x:0,y:-15}
+            });
+            marker.content = '我是第' + (i + 1) + '个Marker';
+            marker.on('click', markerClick);
+        }/* else {
+             marker = new AMap.Marker({
+                map:map,
+                position: provinces[i].center,
+                title: provinces[i].name,
+                icon: icon1,
+                offset:{x:0,y:-15}
+            });
+        }*/
+
+        markers.push(marker);
+    }
+    function markerClick(e) {
+        infoWindow.setContent(e.target.content);
+        infoWindow.open(map, e.target.getPosition());
+    }
+    map.setFitView();
+
+ /*   let markers = [];
+    for(let i=0;i<provinces.length;i+=1){
+        markers.push(new AMap.Marker({
+            position:provinces[i]['center'],
+            content: '<div style="background-color: hsla(0,95%,51%,0.7); height: 15px; width: 15px; border: 1px solid hsl(150,57%,3%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
+            offset: new AMap.Pixel(-15,-15)
+        }))
+    }
+
+    map.plugin(['AMap.ToolBar','AMap.MarkerClusterer'], function() {
+        let toolbar = new AMap.ToolBar({
+            liteStyle:true,//精简模式
+            position:'RB',
+            locate:true,//定位
+            noIpLocate:true//定位失败后使用IP定位
+        });
+        map.addControl(toolbar);//加载工具条
+
+        let cluster = new AMap.MarkerClusterer(
+            map,     // 地图实例
+            markers,    // 海量点组成的数组
+            {
+                gridSize:80
+            });
+        map.addControl(cluster);*/
+
+    /*    let geolocation = new AMap.Geolocation({
+            timeout: 10000,          //超过10秒后停止定位，默认：无穷大
+            buttonOffset: new AMap.Pixel(65, 10),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+            zoomToAccuracy: true, //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+            buttonPosition:'RB'
+        });
+        map.addControl(geolocation);
+        AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
+        AMap.event.addListener(geolocation, 'error', onError);     //返回定位出错信息
+    });*/
+    //解析定位结果
+    function onComplete(data) {
+        let str=['定位成功'];
+        str.push('经度：' + data.position.getLng());
+        str.push('纬度：' + data.position.getLat());
+        if(data.accuracy){
+            str.push('精度：' + data.accuracy + ' 米');
+        }//如为IP精确定位结果则没有精度信息
+        str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
+        document.getElementById('tip').innerHTML = str.join('<br>');
+    }
+    //解析定位错误信息
+    function onError(data) {
+        document.getElementById('tip').innerHTML = '定位失败';
+    }
+</script>
+</body>
+</html>

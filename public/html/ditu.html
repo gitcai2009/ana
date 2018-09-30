@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>点聚合</title>
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+    <script src="http://webapi.amap.com/maps?v=1.4.6&key=您申请的key值&plugin=AMap.MarkerClusterer"></script>
+</head>
+<body>
+<div id="container"></div>
+<!--<script src="//a.amap.com/jsapi_demos/static/china.js"></script>-->
+<script src="../javascripts/marker.js"></script>
+<script>
+    var markers = [];
+    var map = new AMap.Map("container", {
+        resizeEnable: true,
+        center:[110.1, 19.1],
+        zoom: 8
+    });
+    for(var i=0;i<provinces.length;i+=1){
+        markers.push(new AMap.Marker({
+            position:provinces[i]['center'],
+            content: '<div style="background-color: hsla(0,95%,51%,0.7); height: 15px; width: 15px; border: 1px solid hsl(150,57%,3%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
+            offset: new AMap.Pixel(-15,-15)
+        }))
+
+    }
+
+
+    //添加聚合组件
+    map.plugin(["AMap.MarkerClusterer"],function() {
+        marker = new AMap.MarkerClusterer(
+            map,     // 地图实例
+            markers,    // 海量点组成的数组
+            {
+                gridSize:80
+            });
+    });
+
+</script>
+</body>
+</html>

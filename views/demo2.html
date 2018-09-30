@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>login</title>
+<script type="text/javascript" src="../public/jquery-3.3.1.js"></script>
+
+    <style type="text/css">
+        body{
+            background: url(../public/images/banner.jpg)repeat;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            margin: 0;
+        }
+        .login {
+            position: absolute;
+            width: 36%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: 0 auto;
+        }
+        .login h2 {
+            font-size: 30px;
+            font-weight: 700;
+            color: #fff;
+            text-align: center;
+            margin: 40px 0 40px 0 ;
+            font-family: 'Droid Serif', serif;
+        }
+        .login-top {
+            position: absolute;
+            background: #E1E1E1;
+            width: 100%;
+            margin: 0;
+            border-radius: 25px;
+            padding: 30px 0 0 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .login-top form{
+            margin: auto;
+            width: 90%;
+        }
+        .login-top h1 {
+            text-align: center;
+            font-size: 27px;
+            font-weight: 500;
+            color: #F45B4B;
+            margin: 0 0 20px 0 ;
+        }
+        .login-top input[type="text"],input[type="password"] {
+            outline: none;
+            font-size: 15px;
+            font-weight: 500;
+            color: #818181;
+            padding-left: 25px;
+            text-align: left;
+            background: #CACACA;
+            border: 0 solid #ccc;
+            border-radius:25px;
+            margin: 0 0 12px 0 ;
+            width: calc(100% - 25px);
+            height: 48px;
+            -webkit-appearance: none;
+        }
+        .forgot input[type="submit"] {
+            background: #F45B4B;
+            color: #FFF;
+            font-size: 17px;
+            font-weight: 400;
+            padding: 8px 7px;
+            width: 80px;
+            display: inline-block;
+            cursor: pointer;
+            border-radius: 25px;
+            outline: none;
+            border: none;
+        }
+        .forgot input[type="submit"]:hover{
+            background: #0e8152;
+            transition: 0.5s all;
+            -webkit-transition: 0.5s all;
+            -moz-transition: 0.5s all;
+            -o-transition: 0.5s all;
+        }
+        .forgot {
+            text-align: right;
+        }
+        .login-bottom {
+            background: #E15748;
+            margin: 10px 0 0 0;
+            padding: 8px 20px;
+            border-radius: 0  0  25px 25px;
+            text-align: center;
+            border-top: 2px solid #AD4337;
+        }
+
+       @media(max-width:980px){
+            .login {
+                width: 95%;
+            }
+            .login h2 {
+                margin: 100px 0 40px 0 ;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="login">
+    <h2>用户登录 </h2>
+    <div class="login-top">
+        <h1>登录</h1>
+        <form>
+            <input placeholder="用户名" type="text" name="name">
+            <input placeholder="密码" type="password" name="password">
+            <div class="forgot">
+                <input type="submit" value="登录" >
+            </div>
+        </form>
+
+        <div class="login-bottom">
+            还没有账号?
+            <a href="#">立即注册</a>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+</script>
+
+</body>
+</html>

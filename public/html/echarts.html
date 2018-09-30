@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <link rel="stylesheet" href="../stylesheets/style.css"/>
+</head>
+<body>
+<div id="app">
+    <p><a href="place.html">首页</a></p>
+    <p><a href="place.html">海口区</a></p>
+    <p><a href="place.html">琼海区</a></p>
+    <p><a href="echarts.html">三亚区</a></p>
+    <p><a href="echarts.html">琼中区</a></p>
+    <div id="appb">
+        <a href="place.html">
+            <img src="../images/add1.png">
+        </a>
+        <a href="place.html">
+            <img src="../images/cog.png">
+        </a>
+        <a href="place.html">
+            <img border="0" src="../images/exit.png" width="23" height="22">
+        </a>
+    </div>
+</div>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+
+<div id="switch" >
+    <a href="place.html">
+        <img border="0" src="../images/images.png" alt="切换" width="32" height="32">
+    </a>
+</div>
+<div>
+    <div id="line"></div>
+    <div id="item"></div>
+</div>
+
+<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+<script type="text/javascript">
+    // 路径配置
+    require.config({
+        paths: {
+            echarts: 'http://echarts.baidu.com/build/dist'
+        }
+    });
+    require(
+        [
+            'echarts',
+            'echarts/chart/line', // 使用柱状图就加载bar模块，按需加载
+        ],
+        function (ec) {
+            // 基于准备好的dom，初始化echarts图表
+            var myChart = ec.init(document.getElementById('line'));
+
+            option = {
+                tooltip : {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data:['海口区','琼海区','三亚区','东方区','临高区']
+                },
+                toolbox: {
+                    show : true,
+                    feature : {
+                        dataView : {show: true, readOnly: false, optionToContent: function(opt) {
+                            var axisData = opt.xAxis[0].data;
+                            var series = opt.series;
+                            var table = '<table style="width:100%;text-align:center"><tbody><tr><td>月份</td>';
+                            for (var j = 0;j < series.length; j++) {
+                                table +='<td>' + series[j].name + '</td>'
+                            }
+                            table += '</tr>';
+                            for (var i = 0; i < axisData.length; i++) {
+                                table += '<tr>'
+                                         +'<td>' + axisData[i] + '</td>';
+                                for (var x = 0;x < series.length; x++) {
+                                    table +=  '<td>' + series[x].data[i] + '</td>';
+                                }
+                                table += '</tr>';
+                            }
+                            table += '</tbody></table>';
+                            return table;
+                        }},
+                        magicType : {show: true, type: ['stack', 'tiled']},
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : 'category',
+                        name: '月份',
+                        boundaryGap : false,
+                        data : ['1','2','3','4','5','6','7','8','9','10','11','12']
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value',
+                        name: 'RMB'
+                    }
+                ],
+                series : [
+                    {
+                        name:'海口区',
+                        type:'line',
+                        stack: '总量1',
+                        itemStyle:{
+                            normal: {
+                                label: {
+                                    show: true,
+                                    position:'top'
+                                }
+                            }
+                        },
+                        data:[120.5, 130, 150, 134, 90, 230, 210]
+                    },
+                    {
+                        name:'琼海区',
+                        type:'line',
+                        stack: '总量1',
+                        itemStyle:{
+                            normal: {
+                                label: {
+                                    show: true,
+                                    position:'top'
+                                }
+                            }
+                        },
+                        data:[220, 182, 191, 234, 290, 330, 310]
+                    },
+                    {
+                        name:'三亚区',
+                        type:'line',
+                        stack: '总量3',
+                        itemStyle:{
+                            normal: {
+                                label: {
+                                    show: true,
+                                    position:'top'
+                                }
+                            }
+                        },
+                        data:[150, 232, 201, 154, 190, 330, 410]
+                    },
+                    {
+                        name:'东方区',
+                        type:'line',
+                        stack: '总量4',
+                        itemStyle:{
+                            normal: {
+                                label: {
+                                    show: true,
+                                    position:'top'
+                                }
+                            }
+                        },
+                        data:[320, 332, 301, 334, 390, 330, 320]
+                    },
+                    {
+                        name:'临高区',
+                        type:'line',
+                        stack: '总量5',
+                        itemStyle:{
+                            normal: {
+                                label: {
+                                    show: true,
+                                    position:'top'
+                                }
+                            }
+                        },
+                        data:[820, 932, 901, 934, 1290, 1330, 1320]
+                    }
+                ]
+            };
+
+
+            // 为echarts对象加载数据
+            myChart.setOption(option);
+        }
+    );
+</script>
+</body>
+</html>

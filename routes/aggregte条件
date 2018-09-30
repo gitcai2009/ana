@@ -1,0 +1,65 @@
+[今年总收入
+    { $project:{ "year_data":{$year:"$date"},date:1,saleroom:1}},
+    { $match: { "year_data": (new Date()).getFullYear()}},
+    { $group: { _id: {"$year": "$date"}, saleSum:{ $sum: "$saleroom"}}}
+]
+
+[每月收入排序
+    { $project:{ "year_data":{$year:"$date"},date:1,saleroom:1}},
+    { $match: { "year_data": (new Date()).getFullYear()}},
+    { $group: { _id: {"$month": "$date"}, monthSale:{ $sum: "$saleroom"}}},
+    { $sort:{_id:1}}
+]
+
+[今年区总收入
+    { $project:{ "year_data":{$year:"$date"},date:1,saleroom:1,areaId:1}},
+    { $match: { "year_data": (new Date()).getFullYear(), "areaId":areaid}},
+    { $group: { _id: {"$year": "$date"}, areaSaleSum:{ $sum: "$saleroom"}}}
+]
+
+[区每月收入排序
+    { $project:{ "year_data":{$year:"$date"},date:1,saleroom:1,areaId:1}},
+    { $match: { "year_data": (new Date()).getFullYear(), "areaId":areaid}},
+    { $group: { _id: {"$month": "$date"}, areaSaleSum:{ $sum: "$saleroom"}}}
+    { $sort:{_id:1}}
+]
+
+[今年总损坏
+    { $project:{ "year_data":{$year:"$date"},date:1,loss:1}},
+    { $match: { "year_data": (new Date()).getFullYear()}},
+    { $group: { _id: {"$year": "$date"}, lossSum:{ $sum: "$loss"}}}
+]
+
+[每月损坏排序
+    { $project:{ "year_data":{$year:"$date"},date:1,loss:1}},
+    { $match: { "year_data": (new Date()).getFullYear()},
+    { $group: { _id: {"$month": "$date"}, monthLoss:{ $sum: "$loss"}}}
+    { $sort:{_id:1}}
+]
+
+[今年区总损坏
+    { $project:{ "year_data":{$year:"$date"},date:1,loss:1,areaId:1}},
+    { $match: { "year_data": (new Date()).getFullYear(), "areaId":areaid}},
+    { $group: { _id: {"$year": "$date"}, areaLossSum:{ $sum: "$loss"}}}
+]
+
+[区每月损坏排序
+    { $project:{ "year_data":{$year:"$date"},date:1,loss:1,areaId:1}},
+    { $match: { "year_data": (new Date()).getFullYear(), "areaId":areaid},
+    { $group: { _id: {"$month": "$date"}, monthLoss:{ $sum: "$loss"}}}
+    { $sort:{_id:1}}
+]
+
+[点每月收入排序
+    { $project:{ "year_data":{$year:"$date"},date:1,saleroom:1,placeId:1}},
+    { $match: { "year_data": (new Date()).getFullYear(), placeId:placeid}},
+    { $group: { _id: {"$month": "$date"}, monthPlaceSale:{ $sum: "$saleroom"}}},
+    { $sort:{_id:1}}
+]
+
+[点每月损坏排序
+    { $project:{ "year_data":{$year:"$date"},date:1,loss:1,placeId:1}},
+    { $match: { "year_data": (new Date()).getFullYear(), placeId:placeid}},
+    { $group: { _id: {"$month": "$date"}, monthPlaceLoss:{ $sum: "$loss"}}},
+    { $sort:{_id:1}}
+]
