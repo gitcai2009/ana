@@ -204,6 +204,18 @@ module.exports = {
         return result
     },
 
+    replaceAreaid: function replaceAreaid(area, data) {
+        const result = [];
+         for (let y =0;y<area.length;y++){
+            for (let i=0;i<data.length;i++){
+                if ((data[i].areaId)==(area[y]._id)) {//是否同区
+                    data[i].areaId = area[y].areaname
+                }
+            }
+        }
+        return data
+    },
+
     placeAnalyse: function placeAnalyse(data, areaid) {
         if (areaid){
             return data.filter(function (item) {

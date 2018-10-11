@@ -87,19 +87,20 @@ const area = [
     { _id:'5b518020c15b081ab08e624d', areaname: '东方区' },
     { _id:'5b7516c0c1a3cf32bc87111f', areaname: '文昌区' }];
 
-var areaids = [ObjectId('5b923459a298223e5036a707')];
-/*SaleModel.getAreaLossSum([]).then(function (docs) {
-    console.log(docs);
-});*/
-MachineModel.getCount('5b922f986af4c218fc3aa48d').then(function (docs) {
-    console.log(docs);
-});
+var areaids = [ObjectId('5b9f6aae103390043c42b406')];
 
-/*const p = '123.12312,124.151';
+Sale.aggregate([
+        { $project:{ "time":{$dateToString: { format: "%Y-%m-%d", date: "$date" }},_id:0,saleroom:1,loss:1}},
+        { $sort:{ time:-1 }},
+    ]).then(function(docs){
+        console.log(docs);
+    })
+
+/* const p = '123.12312,124.151';
 const arr = p.split(",").map(function (val) {
     return Number(val) + 1
 });
-console.log(arr);*/
+console.log(arr); */
 
 /*Sale.aggregate([
     // { $project:{area:1}},

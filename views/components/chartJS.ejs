@@ -4,6 +4,7 @@
     var shadowData = JSON.parse('<%- JSON.stringify(shadowData) %>');
     var saleTable = JSON.parse('<%- JSON.stringify(saleTable) %>');
     var lossTable = JSON.parse('<%- JSON.stringify(lossTable) %>');
+    var arrears = JSON.parse('<%- JSON.stringify(arrears) %>');
 
     var areaData = [];
     for (let i=0;i<lineData.length;i++){
@@ -277,17 +278,40 @@
             + '</tr>';
         for(let i = 0;i<lossTable.length;i++){
             if (i%2 == 0){
-                text += '<tr><td>'+lossTable[i].areaName
-                    + '</td><td>'+lossTable[i].placeName
-                    + '</td><td>'+lossTable[i].value
-                    +'</td></tr>'
+                text += '<tr>'
             }else {
-                text += '<tr class="alt"><td>'+lossTable[i].areaName
-                    + '</td><td>'+lossTable[i].placeName
-                    + '</td><td>'+lossTable[i].value
-                    +'</td></tr>'
+                text += '<tr class="alt">'
             }
+            text += '<td>'+lossTable[i].areaName
+                + '</td><td>'+lossTable[i].placeName
+                + '</td><td>'+lossTable[i].value
+                +'</td></tr>'
 
+        }
+        text += '</table>';
+
+        return text
+    }
+    function arrearsTable1() {
+        let text = '<table class="customers">'
+            +'<caption>老赖排行</caption>'
+            + '<tr>'
+            + '<th>区域</th>'
+            + '<th>名称</th>'
+            + '<th>欠款</th>'
+            + '<th>时间</th>'
+            + '</tr>';
+        for(let i = 0;i<arrears.length;i++){
+            if (i%2 == 0){
+                text += '<tr>'
+            }else {
+                text += '<tr class="alt">'
+            }
+            text += '<td>'+arrears[i].areaId
+                + '</td><td>'+arrears[i].name
+                + '</td><td>'+arrears[i].arrears
+                + '</td><td>'+arrears[i].time
+                +'</td></tr>'
         }
         text += '</table>';
 
@@ -296,5 +320,6 @@
 
     document.getElementById("income").innerHTML = incomeTable();
     document.getElementById("badDebt").innerHTML = badDebtTable1();
+    document.getElementById("arrears").innerHTML = arrearsTable1();
 
 </script>

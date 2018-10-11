@@ -2,6 +2,7 @@
 const path = require('path');
 const express = require('express');
 const flash = require('connect-flash');
+const bodyParser = require('body-parser');
 const session = require('express-session');
 const config = require('config-lite')(__dirname);
 const config1 = require('./config/default');
@@ -30,13 +31,16 @@ app.use(session({
 // flash 中间件，用来显示通知
 app.use(flash());
 
+
+/* app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false })); */
 // 处理表单及文件上传的中间件
 app.use(require('express-formidable')({
     keepExtensions: true// 保留后缀
 }));
 
 // 设置模板全局常量
-app.locals.blog = {
+app.locals.analyze = {
   title: pkg.name,
   description: pkg.description
 };

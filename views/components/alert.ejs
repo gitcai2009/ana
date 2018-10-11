@@ -13,7 +13,7 @@ function tt(success,error) {
             return  M.dialog.close()
         }
         M.dialog1 = jqueryAlert({
-            'content' : succ,
+            'content' : success,
             'closeTime' : 2000
         })
     }
@@ -22,7 +22,7 @@ function tt(success,error) {
             return  M.dialog.close()
         }
         M.dialog1 = jqueryAlert({
-            'content' : err,
+            'content' : error,
             'closeTime' : 2800
         })
     }
@@ -32,13 +32,5 @@ tt(succ,err)
 
     var urlstr = location.href;
     var urlstatus=false;
-    $(".now a").each(function () {
-        if ((urlstr + '/').indexOf($(this).attr('href')) > -1&&$(this).attr('href')!='') {
-            $(this).addClass('cur'); urlstatus = true;
-        } else {
-            $(this).removeClass('cur');
-        }
-    });
-    if (!urlstatus) {$(".now a").eq(0).addClass('cur'); }
 
 </script>

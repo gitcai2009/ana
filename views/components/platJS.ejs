@@ -48,32 +48,5 @@
         infoWindow.open(map, e.target.getPosition());
     }
     map.setFitView();
-
-/*    let markers = [];
-    for(let i=0;i<place.length;i+=1){
-        markers.push(new AMap.Marker({
-            position:place[i].coord,
-            content: '<div style="background-color: hsla(0,95%,51%,0.7); height: 15px; width: 15px; border: 1px solid hsl(150,57%,3%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
-            offset: new AMap.Pixel(-15,-15)
-        }))
-    }
-
-    map.plugin(['AMap.ToolBar','AMap.MarkerClusterer'], function() {
-        let toolbar = new AMap.ToolBar({
-            liteStyle:true,//精简模式
-            position:'RB',
-            locate:true,//定位
-            noIpLocate:true//定位失败后使用IP定位
-        });
-        map.addControl(toolbar);//加载工具条
-
-        var cluster = new AMap.MarkerClusterer(
-            map,     // 地图实例
-            markers,    // 海量点组成的数组
-            {
-                gridSize:80
-            });
-        map.addControl(cluster);
-    });*/
 </script>
 

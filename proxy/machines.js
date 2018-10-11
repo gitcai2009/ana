@@ -26,8 +26,8 @@ module.exports = {
         return Machine.count({author: author,placeId:{$ne:null}}).exec()
     },
 
-    updateMachine: function updateMachine(maNo,date) {
-        return Machine.updateOne({machineNo:maNo},{$set:date}).exec()
+    updateMachine: function updateMachine(author,maNo,date) {
+        return Machine.updateOne({author:author,machineNo:maNo},{$set:date}).exec()
     },
     updateMachineById: function updateMachineById(id,date) {
         return Machine.updateOne({_id:id},{$set:date}).exec()

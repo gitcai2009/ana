@@ -30,7 +30,16 @@ router.get('/:areaId/place-details',checkLogin,function (req, res, next) {
 
 //POST /place/:areaId/place-details? placeId = xxx    添加收入
 router.post('/:areaId/place-details',checkLogin,function (req, res, next) {
-    const areaId = req.params.areaId;
+/*     const tt = req.fields.tt;
+    const gift = req.fields.gift;
+    console.log('礼品'+gift);
+    console.log('数组'+tt); */
+    var da =req.fields;
+    console.log(da);
+
+    // res.redirect('back');
+    // next();
+   /*  const areaId = req.params.areaId;
     const placeId = req.query.placeId;
     const machineId = req.fields.machineId;
     const oidInitial = req.fields.oidInitial;
@@ -38,13 +47,12 @@ router.post('/:areaId/place-details',checkLogin,function (req, res, next) {
     const loss = req.fields.loss;
     const gift = req.fields.gift;
     const count = initial - oidInitial;
-
     try {
         if (!placeId.length) throw new Error('不正常路径');
         if (!machineId.length) throw new Error('发生未知错误，请刷新后操作');
         if (!oidInitial.length) throw new Error('发生未知错误，请刷新后操作');
         if (!initial.length) throw new Error('请填写记录数额');
-        if (initial < oidInitial) throw new Error('新数值不能比记录数值小');
+        if (count <= 0) throw new Error('新数值不能比记录数值小');
         if (!loss.length) throw new Error('请填写损耗金额');
         if (!gift.length) throw new Error('请填写礼品金额');
     }catch (e){
@@ -73,14 +81,14 @@ router.post('/:areaId/place-details',checkLogin,function (req, res, next) {
             res.redirect('back')
         }
         next(e)
-    });
+    }); */
 });
 
 //GET  GET /place/:placeId/remove 删除点
 router.get('/:placeId/remove',checkLogin,function (req, res, next) {
     const placeId = req.params.placeId;
     MachineModel.getMachineByPlaceid(placeId).then(function (docs) {
-        if (!docs){
+        if (docs){
             req.flash('error', '请回收该店所有机器后再删除');
             return res.redirect('back')
         }
@@ -116,6 +124,38 @@ router.post('/:placeId/edit-arrears',checkLogin, function (req, res, next) {
     });
 });
 
+//GET  GET /place/:placeId/update-time 重置欠款时间
+router.get('/:placeId/update-time',checkLogin,function (req, res, next) {
+    const placeId = req.params.placeId;
+    PlaceModel.updataPlace(placeId,{date:new Date}).then(function () {
+        req.flash('success', '重置成功');
+        res.redirect('back');
+    }).catch(function (e) {
+        if (e){
+            req.flash('error', '重置失败');
+            res.redirect('back')
+        }
+        next(e)
+    });
+});
+
+//POST /place/:placeId/edit-ratio 修改分成占比
+router.post('/:placeId/edit-ratio',checkLogin, function (req, res, next) {
+    const placeId = req.params.placeId;
+    const ratio = req.fields.ratio;
+    let date = {ratio:ratio};
+    PlaceModel.updataPlace(placeId,date).then(function () {
+        req.flash('success', '修改成功');
+        res.redirect('back');
+    }).catch(function (e) {
+        if (e){
+            req.flash('error', '修改失败');
+            res.redirect('back')
+        }
+        next(e)
+    });
+});
+
 //POST /place/:placeId/edit-comment 修改备注
 router.post('/:placeId/edit-comment',checkLogin, function (req, res, next) {
     const placeId = req.params.placeId;
@@ -135,8 +175,9 @@ router.post('/:placeId/edit-comment',checkLogin, function (req, res, next) {
 
 //GET /place/:placeId/recycle-machine 回收机器
 router.get('/:placeId/recycle-machine',checkLogin,function (req, res, next) {
-    const maId = req.query.machineId;
-    MachineModel.updateMachineById(maId,{placeId:null}).then(function () {
+    const maNo = req.query.machineNo;
+    const author = req.session.user._id;
+    MachineModel.updateMachine(author, maNo, {placeId:null}).then(function () {
         req.flash('success', '回收成功');
         res.redirect('back');
     }).catch(function (e) {
@@ -150,10 +191,9 @@ router.get('/:placeId/recycle-machine',checkLogin,function (req, res, next) {
 
 //GET /place/:placeId/put-machine 摆放机器
 router.get('/:placeId/put-machine',checkLogin,function (req, res, next) {
+    const maNo = req.query.machineNo;
     const author = req.session.user._id;
-    const maId = req.query.machineId;
     const placeId = req.params.placeId;
-
     try {
         if (!maNo.length) throw new Error('请填写机器编号');
     }catch(e){
@@ -170,7 +210,7 @@ router.get('/:placeId/put-machine',checkLogin,function (req, res, next) {
             req.flash('error', '这个机器已在其它地方摆放');
             return res.redirect('back')
         }
-        MachineModel.updateMachineById(maId,{placeId:placeId}).then(function () {
+        MachineModel.updateMachine(author, maNo, {placeId:placeId}).then(function () {
             req.flash('success','放置成功');
             res.redirect('back')
         }).catch(function (e) {

@@ -19,18 +19,21 @@ router.get('/',checkLogin , function (req, res, next) {
         SaleModel.getMonthAreaSale(areaid),
         SaleModel.getAreaLossSum(areaid),
         SaleModel.getSalerSort(areaid),
-        SaleModel.getLossSort(areaid)
+        SaleModel.getLossSort(areaid),
+        PlaceModel.getPlaceTime(areaid)
     ]).then(function (result) {
         const lineData = dataTreating.lineData(area,result[0]);
         const shadowData = dataTreating.shadowData(area,result[1]);
         const saleTable = dataTreating.tablelData(area, result[2]);
         const lossTable = dataTreating.tablelData(area, result[3]);
+        const arrears = dataTreating.replaceAreaid(area, result[4]);
         res.render('chart', {
             areas: area,
             lineData: lineData,
             shadowData: shadowData,
             saleTable: saleTable,
-            lossTable: lossTable
+            lossTable: lossTable,
+            arrears:arrears
         })
     })
         .catch(next)

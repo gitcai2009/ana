@@ -1,5 +1,6 @@
 <script type="text/javascript">
     var dateSale = JSON.parse('<%- JSON.stringify(dateSale) %>');
+    var machines = JSON.parse('<%- JSON.stringify(machines) %>');
 
     var date = dateSale.map(function (item) {
         return item._id
@@ -45,11 +46,18 @@
     map1(echarts);
 
     $(document).ready(function() {
-        $(".table_button").click(function () {
-            $(".area_form").slideDown();
+        $("#buttonma").click(function () {
+            $("#addmachine").slideDown();
         });
         $(".button_two").click(function () {
-            $(".area_form").slideUp();
+            $("#addmachine").slideUp();
+        });
+
+         $("#buttonsale").click(function(){
+            $("#addsale").slideDown();
+        });
+        $(".setting-deletes").click(function(){
+            $("#addsale").slideUp();
         });
 
         $(".table_button1").click(function () {
@@ -66,13 +74,7 @@
             $("#win_delete").slideUp();
         });
 
-        $(".li_one").click(function(){
-            $("#form1").slideDown();
-        });
-        $(".setting-deletes").click(function(){
-            $("#form1").slideUp();
-        });
-
+    
         $(".now_li").click(function () {
             $(".comment").toggle();
             $(".triangle").toggleClass("click_triangle");
@@ -85,10 +87,90 @@
         document.getElementById("title").innerHTML = '编号:'+ index;
     }
 
-    function formSale(machineNo,initial,machineId) {
-        document.getElementById("machineId").value = machineId;
-        document.getElementById("oidInitial").value = initial;
-        document.getElementById("setmachine").innerHTML = '编号:'+ machineNo;
+    function ifdelete(){
+        if (!machines.length){
+            return true
+        }else{
+            document.getElementById("alery_text").innerHTML = "请回先回收所有机器";
+            $(".alert_").show().delay(2500).hide(300);
+            return false
+        }
     }
 
+    function addSale(){
+        var data = [];
+        var ratios = $("input[name='ratio']").val();
+        var losss = $("input[name='loss']").val();  
+        var gifts = $("input[name='gift']").val();  
+        var belongs = $("select[name='belong']").val();
+        $('.table_data').each(function() {
+            var text = {
+                    machineId:"",
+                    oidInitial:0,
+                    initialNo:0,
+                    loss:losss,
+                    gift:gifts,
+                    belong:belongs,
+                    ratio:ratios
+                    } 
+            $(this).find("td input").each(function(index) {
+                switch(index){
+                    case 0:
+                    text.machineId = $(this).val();
+                    break;
+                    case 1:
+                    text.oidInitial = $(this).val();
+                    break;
+                    case 2:
+                    text.initialNo = $(this).val();
+                    break;
+                }
+            });
+        
+            data.push(text);
+        }); 
+        return data
+    }
+
+    $('#postPale').on('click',function(){
+        var vali = validate();
+        if(vali){
+            var data = addSale()
+            var saledata = JSON.stringify(data)
+            $.ajax({
+                type:'POST',
+                data: saledata,
+                contentType :'application/json',
+                dataType:'json',
+                url :'',
+                success: function (data) {
+                    if (data) {
+                        console.log('成功');
+                    }
+                },
+                error:function(){
+                    document.getElementById("alery_text").innerHTML = "添加失败";
+                    $(".alert_").show().delay(2500).hide(300);
+                }
+            }); 
+        }else{
+            document.getElementById("alery_text").innerHTML = "请填写完整信息";
+                    $(".alert_").show().delay(2500).hide(300);
+        }
+        
+    });  
+
+    function validate(){
+        var valid = true;
+        $('.setting_body input[type="number"]').each(function() {
+            var value = $(this).val();
+            if(value != "" && value != null){
+            }else{
+                valid = false;
+                return valid
+            }
+
+        })
+        return valid
+    }
 </script>

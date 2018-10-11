@@ -24,12 +24,21 @@ module.exports = {
     },
 
     //获取区域所有palce
-    getPlaceAreaid: function getPlaceAreaid(areaid) {
-        return Place.find({ areaId:areaid }) .sort({_id:1}).exec()
+    getPlaceAreaid: function getPlaceAreaid(areaId) {
+        return Place.find({ areaId:areaId }) .sort({_id:1}).exec()
+    },
+
+    //用户所有place欠款
+    getPlaceTime: function getPlaceTime(areaId) {
+        return Place.aggregate([
+            { $match:{areaId:{$in:areaId},arrears:{$ne:0}}},
+            { $project:{ "time":{$dateToString: { format: "%Y-%m-%d", date: "$date" }},name:1,arrears:1,areaId:1}},
+            { $sort:{ time:1 }},
+        ]).exec()
     },
 
     //修改备注
-    updataPlace: function updataComment(placeId, data) {
+    updataPlace: function updataPlace(placeId, data) {
         return Place.updateOne({_id: placeId},data).exec()
     },
 
