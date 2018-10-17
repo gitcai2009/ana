@@ -3,45 +3,47 @@ const ObjectId = mongoose.Types.ObjectId;
 const models = require('../models/mongo');
 const Sale = models.Sale;
 
-var year=(new Date()).getFullYear(); 
-var timemin = year+'-01-01';
-var timemax = year+'-12-31';
-
-
 module.exports = {
     create: function create(sale) {
         return Sale.create(sale)
     },
 
 
-    //根据areaId查询今年的所有数据
-    getSaleByareaid: function getSaleByareaid(areaId) {
-        return Sale.find({areaId:{$in:areaId}, "date":{ "$gte" : timemin, "$lte" : timemax }}).exec()
+    //各区收入
+    getAreaSaleSum: function getAreaSaleSum(areaId) {
+        return Sale.aggregate([
+            { $match:{areaId:{$in:areaId}}},
+            { $project:{ "year":{$year:"$date"},saleroom:1,areaId:1}},
+            { $match: { "year": (new Date()).getFullYear()}},
+            { $group: { _id: "$areaId", saleSum:{ $sum: "$saleroom"}}},
+            { $sort:{_id:1}}
+        ]).exec()
     },
 
-    // 根据areaId统计今年的saleroom，loss，gift
-    getAreaSum: function getAreaSum(areaId) {
+    // 各区坏账
+    getAreaLossSum: function getAreaLossSum(areaId) {
         return Sale.aggregate([
             { $match:{areaId:{$in:areaId}}},
             { $project:{ "year":{$year:"$date"},saleroom:1,gift:1,loss:1,areaId:1}},
-            { $match: { "year": year}},
+            { $match: { "year": (new Date()).getFullYear()}},
             { $group: { _id: "$areaId", saleSum:{ $sum: "$saleroom"},lossSum:{$sum:'$loss'},giftSum:{$sum:'$gift'}}},
             { $sort:{_id:1}}
         ]).exec()
     },
 
-    // 根据areaId统计今年各月的saleroom
+    // 各区域每月收入情况
     getMonthAreaSale: function getMonthAreaSale(areaId) {
         return Sale.aggregate([
             { $match:{areaId:{$in:areaId}}},
             { $project:{ "year":{$year:"$date"},date:1,saleroom:1,areaId:1}},
-            { $match: { "year": year}},
+            { $match: { "year": (new Date()).getFullYear()}},
             { $group: { _id: {month:{"$month": "$date"},areaId:"$areaId"}, monthAreaSale:{ $sum: "$saleroom"}}},
             { $sort:{_id:1}}
         ]).exec()
     },
 
-    //根据areaId统计今年place的saleroom
+
+    //放置点总收入前20名
     getSalerSort: function getSalerSort(areaId) {
         return Sale.aggregate([
             { $match:{areaId:{$in:areaId}}},
@@ -51,15 +53,15 @@ module.exports = {
                 foreignField: "_id",
                 as: "place"
             }},
-            { $project:{ "year":{$year:"$date"},"name":'$place.name',saleroom:1,areaId:1}},
-            { $match: { "year": year}},
+            { $project:{ "year":{$year:"$date"},"name":'$place.name',saleroom:1,placeId:1,areaId:1}},
+            { $match: { "year": (new Date()).getFullYear()}},
             { $group: { _id:{ name:"$name",areaId:"$areaId" }, Sum:{ $sum: "$saleroom"}}},
             { $sort:{ Sum:-1 }},
             { $limit: 20 }
         ]).exec()
     },
 
-    //根据areaId统计今年place的loss
+    //放置点总坏账前20名
     getLossSort: function getLossSort(areaId) {
         return Sale.aggregate([
             { $match:{areaId:{$in:areaId}}},
@@ -69,8 +71,8 @@ module.exports = {
                 foreignField: "_id",
                 as: "place"
             }},
-            { $project:{ "year":{$year:"$date"},"name":'$place.name',loss:1,areaId:1}},
-            { $match: { "year": year}},
+            { $project:{ "year":{$year:"$date"},"name":'$place.name',loss:1,placeId:1,areaId:1}},
+            { $match: { "year": (new Date()).getFullYear()}},
             { $group: {_id:{ name:"$name", areaId:"$areaId" }, Sum:{ $sum: "$loss"}}},
             { $sort:{ Sum:-1 }},
             { $limit: 20 }
@@ -93,7 +95,7 @@ module.exports = {
         ]).exec()
     },
 
-    //根据placeId统计每天的saleroom
+    //place每天收入
     getPlaceDateSum: function getPlaceDateSum(placeId) {
         return Sale.aggregate([
             { $match:{placeId:ObjectId(placeId)}},

@@ -22,13 +22,13 @@ router.get('/',checkLogin,function (req, res, next) {
         areaid.push(ObjectId(docs._id))
     });
     Promise.all([
-        PlaceModel.getCoordByid(author),//用户所有坐标
-        SaleModel.getAreaLossSum(areaid),//所有区坏账排序
+        PlaceModel.getCoordByid(author),
+        SaleModel.getSaleByareaid(areaid),
         MachineModel.getCount(author),
         MachineModel.getNoCount(author)
     ]).then(function (result) {
-        const places = dataTreating.placeAnalyse(result[0],areaId);
-        const dates = dataTreating.newtip1(areaId,dataTreating.shadowData(area,result[1]));
+        const places = dataTreating.placeAnalyse(areaId,result[0]);
+        const datas = dataTreating.newtip(areaId,result[1]);
         let machines = null;
         if (!areaId){
             machines = [result[2],result[3]];
@@ -36,7 +36,7 @@ router.get('/',checkLogin,function (req, res, next) {
         res.render('plat', {
             areas: area,
             places: places,
-            dates: dates,
+            datas: datas,
             machines:machines
         })
     })

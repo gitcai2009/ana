@@ -1,5 +1,4 @@
 module.exports = {
-    //tip数据处理
     newtip1: function newtip1(areaId, date) {
         const text = {};
         if (areaId){
@@ -45,48 +44,60 @@ module.exports = {
         }
 
     },
-    newtip: function newtip(sale, loss, area, areaId) {
-        let text = {};
-        if (areaId){
-            //对应区域名的sale
-            let newsale = sale.filter(function (item) {
-                return item._id == areaId;
-            });
-            //对应区域名loss
-            let newloss = loss.filter(function (item) {
-                return item._id == areaId;
-            });
-            if (newsale.length && newloss.length){//都有参数时
-                text.sale = newsale[0].saleSum;
-                text.loss = newloss[0].lossSum;
-                return text
-            }else if (newsale.length){//只有sale有参数时
-                text.sale = newsale[0].saleSum;
-                text.loss = 0;
-                return text
-            }else if (newloss.length){//只有loss有参数时
-                text.sale = 0;
-                text.loss = newloss[0].lossSum;
-                return text
-            }else{//都没有参数时
-                text.sale = 0;
-                text.loss = 0;
-                return text
-            }
-        }else {
-            var saleSum = 0;
-            sale.forEach(function (item) {
-                saleSum += item.saleSum;
-            });
-            var lossSum = 0;
-            loss.forEach(function (item1) {
-                lossSum += item1.lossSum;
-            });
-            text.sale = saleSum;
-            text.loss = lossSum;
-            return text
+    newtip: function newtip(areaId, data) {
+        let text = {
+            saleSum: 0,
+            lossSum: 0,
+            giftSum: 0,
+            sum: 0,
+        };
+        if(areaId){
+            let sa = 0;let l = 0;let g = 0;let su = 0;
+            for(let j=0;j<data.length;j++){
+                if ((data[j].areaId) == areaId) {//是否同区
+                   let s= data[j].saleroom;
+                   let lo= data[j].loss;
+                   let gi= data[j].gift;
+                   let ratio = (data[j].ratio)/100;
+                   sa += s;
+                   l += lo;
+                   g += gi;
+                   if(data[j].belong){
+                       su += (s+gi)/ratio + lo + gi;
+                   }else{
+                       su += s/ratio + lo + gi;
+                   }
+                }
+           }
+           text.saleSum = sa;
+           text.lossSum = l;
+           text.giftSum = g;
+           text.sum = Math.round(su);
+           return text
+        }else{
+            let sa = 0;let l = 0;let g = 0;let su = 0;
+            for(let j=0;j<data.length;j++){
+                let s= data[j].saleroom;
+                let lo= data[j].loss;
+                let gi= data[j].gift;
+                let ratio = (data[j].ratio)/100;
+                sa += s;
+                l += lo;
+                g += gi;
+                if(data[j].belong){
+                    su += (s+gi)/ratio + lo + gi;
+                }else{
+                    su += s/ratio + lo + gi;
+                }
+           }
+           text.saleSum = sa;
+           text.lossSum = l;
+           text.giftSum = g;
+           text.sum = Math.round(su);
+           return text
         }
-
+    
+       
     },
 
     lineData: function lineData(area, sale) {
@@ -104,31 +115,35 @@ module.exports = {
         return data
     },
 
-    shadowData: function shadowData(area,date) {
-        let id = [],name = [],sale = [],loss = [],gift = [],profit = [];
+    shadowData: function shadowData(area,data) {
+        let id = [],name = [],sale = [],loss = [],gift = [],sum = [];
 
         for (let i=0;i<area.length;i++){
             id.push(area[i]._id);
             name.push(area[i].areaname);//区域名
-            sale.push('-');loss.push('-');gift.push('-');profit.push('-');
-            let newdate = date.filter(function (item) {
-                return item._id == area[i]._id;
-            });
 
-            if (newdate.length){
-                sale[i] = newdate[0].saleSum;
-                let lo = newdate[0].lossSum;
-                let gi = newdate[0].giftSum;
-                if (lo){
-                    loss[i] = -(newdate[0].lossSum);
-                }
-                if (gi){
-                    gift[i] = -(newdate[0].giftSum);
-                }
-                profit[i] = (sale[i] - lo - gi);
+            let sa = 0;let l = 0;let g = 0;let su = 0;
+            for(let j=0;j<data.length;j++){
+                 if ((data[j].areaId)==(area[i]._id)) {//是否同区
+                    let s= data[j].saleroom;
+                    let lo= data[j].loss;
+                    let gi= data[j].gift;
+                    let ratio = (data[j].ratio)/100;
+                    sa += s;
+                    l += lo;
+                    g += gi;
+                    if(data[j].belong){
+                        su += (s+gi)/ratio + lo + gi;
+                    }else{
+                        su += s/ratio + lo + gi;
+                    }
+                 }
             }
+            sale.push(sa);
+            loss.push(-l);
+            gift.push(-g);
+            sum.push(Math.round(su));
         }
-
 
         let da = {
             id:id,
@@ -136,55 +151,10 @@ module.exports = {
             sale: sale,
             loss: loss,
             gift:gift,
-            profit: profit
+            sum: sum
         };
 
         return da
-    },
-    shadowData1: function shadowData(area,saleDate, lossDate) {
-        let name = [];
-        let sale = [];
-        let loss = [];
-        let profit = [];
-
-        for (let i=0;i<area.length;i++) {
-            name.push(area[i].areaname);//区域名
-
-            let newsale = saleDate.filter(function (item) {
-                return item.name == area[i].areaname;
-            });
-            let docs = 0;
-            (newsale[0].sale).forEach(function (item) {
-                //判断数组里的值是不是字符串，并且数组里的值转换成Number()数字后，和转换成浮点数后是相等的，
-                if ((typeof item != "string") && Number(item) == parseFloat(item)) {
-                    docs += item;
-                }
-            });
-            sale.push(docs);//收入
-
-            let newloss = lossDate.filter(function (item) {
-                return item._id == area[i]._id;
-            });
-            if (!newloss.length){
-                loss.push(0)
-            }else{
-                loss.push(-(newloss[0].lossSum));//损耗
-            }
-
-            profit.push(sale[i]+loss[i]);//利润
-
-        }
-
-
-
-        let dat = {
-            name: name,
-            sale: sale,
-            loss: loss,
-            profit: profit
-        };
-
-        return dat
     },
 
     tablelData: function tablelData(area, data) {
@@ -216,12 +186,50 @@ module.exports = {
         return data
     },
 
-    placeAnalyse: function placeAnalyse(data, areaid) {
+    placeAnalyse: function placeAnalyse(areaid,data) {
         if (areaid){
             return data.filter(function (item) {
                 return item.areaId == areaid;
             })
         }
         return data
+    },
+
+    regroupRecorded: function regroupRecorded(data,areaId,placeId,saleId){
+        const rData = [];
+        let index = data.initial;
+        for(var i = 0;i < index.length; i++){
+            let count = data.initial[i] - data.oidInitial[i];
+            const text = {
+                recorded:count,
+                machineId: data.machineId[i],
+                areaId:areaId,
+                placeId:placeId,
+                saleId:saleId
+            }
+            rData.push(text);
+        }
+        return rData
+    },
+
+    SaleroomSum: function SaleroomSum(data){
+        let loss = parseInt(data.loss);
+        let gift = parseInt(data.gift);
+        let belong = data.belong;
+        let ratio = (data.newratio)/100;
+        let index = data.initial;
+        let sum = 0;
+        for(var i = 0;i < index.length; i++){
+            const initial = data.initial[i];
+            const oidInitial = data.oidInitial[i];
+            let count = initial - oidInitial;
+            sum += count;
+        }
+        if(belong){
+            return (sum - loss - gift)*ratio + gift
+        }else{
+            return (sum - loss - gift)*ratio
+        }
     }
+
 };

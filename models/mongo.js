@@ -13,4 +13,4 @@ exports.User = mongoose.model('user');
 exports.Sale = mongoose.model('sale');
 exports.Place = mongoose.model('place');
 exports.Machine = mongoose.model('machine');
-exports.Machine = mongoose.model('recorded');
+exports.Recorded = mongoose.model('recorded');

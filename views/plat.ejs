@@ -67,12 +67,13 @@
 
 <div id='container'></div>
 <div class="tip">
-  <p>总收入: <%= dates.sale %></p>
-  <p>坏账: <%= -dates.loss %></p>
-  <p>礼品: <%= -dates.gift %></p>
+  <p>总&emsp;收: <%= datas.sum %></p>
+  <p>纯收益: <%= datas.saleSum %></p>
+  <p>坏&emsp;账: <%= datas.lossSum %></p>
+  <p>礼&emsp;品: <%= datas.giftSum %></p>
   <p>放置点: <%= places.length %></p>
   <% if (machines){ %>
-    <p>机器: <%= machines[0] %> / <%= machines[1] %></p>
+    <p>机&emsp;器: <%= machines[0] %> / <%= machines[1] %></p>
   <% }%>
 </div>
 <%- include('components/platJS') %>

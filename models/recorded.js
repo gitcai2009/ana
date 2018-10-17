@@ -6,9 +6,10 @@ const UserRecorded = new Schema({
     date:{type: Date, default: Date.now},
     machineId:{type: Schema.Types.ObjectId, ref: 'machine'},
     areaId:{type: Schema.Types.ObjectId, ref: 'user.area'},
-    placeId:{type: Schema.Types.ObjectId, ref: 'place'}
+    placeId:{type: Schema.Types.ObjectId, ref: 'place'},
+    saleId:{type: Schema.Types.ObjectId, ref: 'sale'}
 });
 
-UserRecorded.index({ placeId:1 , areaname:1});
+UserRecorded.index({ placeId:1 , recorded:1});
 
 mongoose.model('recorded', UserRecorded, 'recorded');

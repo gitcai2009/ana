@@ -17,7 +17,7 @@ router.get('/',checkLogin , function (req, res, next) {
     });
     Promise.all([
         SaleModel.getMonthAreaSale(areaid),
-        SaleModel.getAreaLossSum(areaid),
+        SaleModel.getSaleByareaid(areaid),
         SaleModel.getSalerSort(areaid),
         SaleModel.getLossSort(areaid),
         PlaceModel.getPlaceTime(areaid)

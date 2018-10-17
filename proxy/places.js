@@ -14,7 +14,6 @@ module.exports = {
     getCoordByid: function getCoordByid(author) {
         return Place
             .find({ author:author },{_id:0})
-            .sort({_id:-1})
             .exec()
     },
 
@@ -25,7 +24,7 @@ module.exports = {
 
     //获取区域所有palce
     getPlaceAreaid: function getPlaceAreaid(areaId) {
-        return Place.find({ areaId:areaId }) .sort({_id:1}).exec()
+        return Place.find({ areaId:areaId }) .sort({name:1}).exec()
     },
 
     //用户所有place欠款

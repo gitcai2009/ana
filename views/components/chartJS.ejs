@@ -109,7 +109,7 @@
         let myChart = ec.init(document.getElementById('saleSum'));
         let option = {
             title : {
-                text: '各区总收入占比',
+                text: '各区纯利润对比',
                 x:'center'
             },
             tooltip : {
@@ -164,7 +164,7 @@
                 }
             },
             legend: {
-                data:['总收入', '利润', '坏账','礼品']
+                data:['总收入', '纯利润', '坏账','礼品']
             },
             toolbox: {
                 show : true,
@@ -208,28 +208,31 @@
                     name:'总收入',
                     type:'bar',
                     stack: '总量',
-                    barWidth : 14,
+                    barWidth : 16,
                     label : {show: true},
-                    data:shadowData.sale
+                    data:shadowData.sum
                 },
                 {
-                    name:'利润',
+                    name:'纯利润',
                     type:'bar',
-                    barWidth : 18,
+                    barWidth : 20,
+                    stack: '总量1',
                     label : {show: true},
-                    data:shadowData.profit
+                    data:shadowData.sale
                 },
                 {
                     name:'坏账',
                     type:'bar',
                     stack: '总量',
+                    barWidth : 16,
                     label:{show: true},
                     data:shadowData.loss
                 },
                 {
                     name:'礼品',
                     type:'bar',
-                    stack: '总量',
+                    barWidth : 20,
+                    stack: '总量1',
                     label:{show: true},
                     data:shadowData.gift
                 }

@@ -30,7 +30,7 @@ module.exports = {
         return Machine.updateOne({author:author,machineNo:maNo},{$set:date}).exec()
     },
     updateMachineById: function updateMachineById(id,date) {
-        return Machine.updateOne({_id:id},{$set:date}).exec()
+        return Machine.update({_id:id},{$set:date}).exec()
     },
 
     deleteMachine: function deleteMachine(author,machineNo) {

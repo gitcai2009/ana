@@ -22,7 +22,7 @@
             },
             title: {
                 left: 'center',
-                text: '历史收入情况'
+                text: '纯利润收入情况'
             },
             tooltip: {
                 trigger: 'axi0s1'
@@ -80,6 +80,11 @@
             $(".triangle").toggleClass("click_triangle");
             $(".now_li").toggleClass("click_li");
         });
+
+        $(".now_img").click(function () {
+            $(".explain").toggle();
+            $(".now_img").toggleClass("click_li");
+        });
     });
 
     function getfrom(index) {
@@ -99,30 +104,34 @@
 
     function addSale(){
         var data = [];
-        var ratios = $("input[name='ratio']").val();
+        var ratios = $("input[name='newratio']").val();
         var losss = $("input[name='loss']").val();  
         var gifts = $("input[name='gift']").val();  
         var belongs = $("select[name='belong']").val();
+        var terms = {
+                loss:parseInt(losss),
+                gift:parseInt(gifts),
+                belong:Boolean(belongs),
+                ratio:parseInt(ratios),
+                index:machines.length
+            }
+            data.push(terms);
         $('.table_data').each(function() {
             var text = {
                     machineId:"",
                     oidInitial:0,
                     initialNo:0,
-                    loss:losss,
-                    gift:gifts,
-                    belong:belongs,
-                    ratio:ratios
-                    } 
+                } 
             $(this).find("td input").each(function(index) {
                 switch(index){
                     case 0:
                     text.machineId = $(this).val();
                     break;
                     case 1:
-                    text.oidInitial = $(this).val();
+                    text.oidInitial = parseInt($(this).val());
                     break;
                     case 2:
-                    text.initialNo = $(this).val();
+                    text.initialNo = parseInt($(this).val());
                     break;
                 }
             });
@@ -138,19 +147,22 @@
             var data = addSale()
             var saledata = JSON.stringify(data)
             $.ajax({
-                type:'POST',
                 data: saledata,
-                contentType :'application/json',
-                dataType:'json',
                 url :'',
+                type:'post',
+                contentType :'application/json',
+                dataType:'JSON',
+                async:false, 
                 success: function (data) {
-                    if (data) {
-                        console.log('成功');
-                    }
+                    console.log(data);
+                    console.log('成功');
                 },
-                error:function(){
-                    document.getElementById("alery_text").innerHTML = "添加失败";
-                    $(".alert_").show().delay(2500).hide(300);
+                error:function(textStatus){
+                    var err = '<%= error %>';
+                    console.log("====" + err);
+                    console.log('error ' + textStatus);
+                    // document.getElementById("alery_text").innerHTML = err;
+                    // $(".alert_").show().delay(2500).hide(300);
                 }
             }); 
         }else{

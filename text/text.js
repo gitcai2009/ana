@@ -1,41 +1,17 @@
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const Promise = require('bluebird');
-const User = require('../models/mongo').User;
+/* const User = require('../models/mongo').User;
 const Place = require('../models/mongo').Place;
-const Area = require('../models/mongo').Area;
+const Area = require('../models/mongo').Area; */
 const Sale = require('../models/mongo').Sale;
-const UserModel = require('../proxy/users');
+/* const UserModel = require('../proxy/users');
 const AreaModel = require('../proxy/areas');
 const PlaceModel = require('../proxy/places');
 const SaleModel = require('../proxy/sales');
-const dataTreating = require('../tools/dataTreating');
+const dataTreating = require('../tools/dataTreating'); */
 
-const users = new User({
-  name: 'xiao',
-  password: '123456'
-});
 
-const areas = new Area({
-    areaname: '三亚区'
-
-});
-
-const places = new Place({
-    areaId: '5b39924da3ff1d2c58b2a523',
-    placename: '三亚2',
-    coord: [109.49,18.29],
-    activate: true,
-    comment: '2点'
-});
-
-const sales = new Sale({
-    areaId: '5b39924da3ff1d2c58b2a523',
-    placeId: '5b3997c53b41e03238a8ec83',
-    saleroom: 1000,
-    loss: 50,
-    damage: 8
-});
 const ai = '5b398f6d623413103ce85fcc';
 const areaid = ObjectId('5b398f6d623413103ce85fcc');
 const placeid = '5b398f6d623413103ce85fcd';
@@ -53,7 +29,7 @@ const text =[
     { $limit: 20 }
 ];
 
-Sale.find({})
+/* Sale.find({})
     .populate(
         {path: 'areaId',
             match:{areaname:'海口区'},
@@ -62,8 +38,43 @@ Sale.find({})
     )
     .then(function (docs) {
         console.log(docs)
-});
+}); */
+// { $match: { "year": (new Date()).getFullYear()}},"year":{$year:"$date"}
+var year=(new Date()).getFullYear(); 
+var timemin = year+'-01-01';
+var timemax = year+'-12-31';
 
+
+console.log(typeof(true) != 'boolean');
+
+
+
+
+
+/* Sale.aggregate([
+    { 
+        $project:{
+            "year":{$year:"$date"},saleroom:1,gift:1,loss:1,
+            sum: {
+                $cond: { if: { $gte: [ "$loss", 120 ] }, 
+                    then: {$multiply: [ "$gift", "$loss" ] }, 
+                    else: {$multiply: [ "$gift", {$subtract:[0,"$loss"]}] }
+                }
+                 $let: {
+                    vars: {
+                       total: { $divide: [ '$gift', '$loss' ] },
+                       discounted: { $cond: { if: '$applyDiscount', then: {$subtract:[0,"$loss"]}, else: "$loss" } }
+                    },
+                    in: { $multiply: [ "$$total", "$$discounted" ] }
+                 } 
+            }
+        }
+    }
+]).then(function(docs){
+    console.log(docs);
+}); */
+
+// console.log(uu);
 /*const tt = PlaceModel.getCoordByid();
  tt.then(function (docs) {
  console.log(docs);

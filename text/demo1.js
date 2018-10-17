@@ -9,44 +9,8 @@ const UserModel = require('../proxy/users');
 const MachineModel = require('../proxy/machines');
 const PlaceModel = require('../proxy/places');
 const SaleModel = require('../proxy/sales');
+const RecordedModel = require('../proxy/recordeds');
 const dataTreating = require('../tools/dataTreating');
-
-const users = new User({
-    name: 'xiao',
-    password: '123456',
-    area:[
-        {areaname:'海口区'},
-        {areaname:'三亚区'},
-        {areaname:'琼海区'},
-        {areaname:'东方区'}
-        ]
-});
-
-const places = new Place({
-    name: '琼海1',
-    coord: [110.46,19.26],
-    comment: '电话号码',
-    arrears: 1000,//欠款
-    userid: '5b518020c15b081ab08e624c',
-    areaid: '5b518020c15b081ab08e624e'
-});
-
-const Machines = new Machine({
-    name:'娃娃机',
-    machineNo:'13',
-    initialNo:200,
-    author: '5b518020c15b081ab08e624c'
-    // placeId: '5b51816bea1b8918907cdb73'
-
-});
-
-const sales = new Sale({
-    saleroom: 1000,
-    loss: 50,
-    gift: 8,
-    machineNo:'1',
-    areaname:'三亚区'
-});
 
 /*[ { _id: 5b518020c15b081ab08e6250, areaname: '海口区' },
     { _id: 5b518020c15b081ab08e624f, areaname: '三亚区' },
@@ -67,8 +31,9 @@ const sales = new Sale({
  5b5184559abb613ff04832b2
 
 
- 用户 5b518020c15b081ab08e624c 5b922f986af4c218fc3aa48d
+ 用户 5b518020c15b081ab08e624c
     */
+var author = '5b518020c15b081ab08e624c';
 var areaid = [ObjectId('5b518020c15b081ab08e6250'),ObjectId('5b518020c15b081ab08e624f'),
     ObjectId('5b518020c15b081ab08e624e'),ObjectId('5b518020c15b081ab08e624d'),];
 
@@ -84,17 +49,15 @@ const area = [
     { _id:'5b518020c15b081ab08e6250', areaname: '海口区' },
     { _id:'5b518020c15b081ab08e624f', areaname: '三亚区' },
     { _id:'5b518020c15b081ab08e624e', areaname: '琼海区' },
-    { _id:'5b518020c15b081ab08e624d', areaname: '东方区' },
-    { _id:'5b7516c0c1a3cf32bc87111f', areaname: '文昌区' }];
+    { _id:'5b518020c15b081ab08e624d', areaname: '东方区' }
+];
 
-var areaids = [ObjectId('5b9f6aae103390043c42b406')];
+var areaid1 = [ObjectId('5b518020c15b081ab08e6250')];
 
-Sale.aggregate([
-        { $project:{ "time":{$dateToString: { format: "%Y-%m-%d", date: "$date" }},_id:0,saleroom:1,loss:1}},
-        { $sort:{ time:-1 }},
-    ]).then(function(docs){
-        console.log(docs);
-    })
+PlaceModel.getPlaceTime(areaid).then(function(docs){
+    var data = dataTreating.replaceAreaid(area,docs);
+    console.log(data);
+});
 
 /* const p = '123.12312,124.151';
 const arr = p.split(",").map(function (val) {

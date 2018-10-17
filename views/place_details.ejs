@@ -3,21 +3,23 @@
 <div class="now">
     <ul>
         <li><a href="/chart">首页</a></li>
-        <li>
-        </li>
         <li class="now_li">
             <div class="triangle"></div>
             <span>详情</span>
         </li>
+        <li class="now_img">
+                <img src="/images/question.png">
+        </li>
     </ul>
 </div>
+
 <div class="comment">
     <div class="comment_body">
         <h2><%= places[0].name %></h2>
         <div class="comment_body_one">
             <form name="form_arrears" action="/place/<%= places[0]._id %>/edit-arrears" method="post">
                 <span>欠&emsp;&emsp;款:</span>
-                <input type="number" name="arrears" value="<%= places[0].arrears %>"/>
+                <input type="number" name="arrears" value="<%= places[0].arrears %>" min="0"/>
                 <div class="submit_d">
                     <a href="/place/<%= places[0]._id %>/update-time"><button>重置欠款时间</button></a>
                     <input type="submit" value="修改欠款"/>
@@ -27,7 +29,7 @@
         <div class="comment_body_one">
             <form name="form_ratio" action="/place/<%= places[0]._id %>/edit-ratio" method="post">
                 <span>默认分成:</span>
-                <input type="number" name="ratio" value="<%= places[0].arrears %>"/>
+                <input type="number" name="ratio" value="<%= places[0].ratio %>" min="0"/>
                 <span>%</span>
                 <div class="submit_d">
                     <input type="submit" value="修改分成"/>
@@ -48,6 +50,29 @@
         </div>
     </div>
 </div>
+
+<div class="explain">
+    <h3>说明</h3>
+    <hr/>
+    <table>
+        <tr>
+            <th class="explain_t">礼品归属</th>
+            <th>纯收益计算公式</th>
+        </tr>
+        <tr>
+            <td class="explain_t">我方</td>
+            <td style="color:#fd2b34">(总收入 - 礼品 - 损耗) x 分成 + 礼品</td>
+        </tr>
+        <tr>
+            <td class="explain_t">店方</td>
+            <td style="color:#fd2b34">(总收入 - 礼品 - 损耗) x 分成</td>
+        </tr>
+    </table>
+    <p>
+        回收机器时先添加收入,否则该机器收入将不能跟此随放置点,统计将出现混乱.
+    </p>
+</div>
+
 <div id="win_delete" class="win">
     <div class="window-title">
         <h2 style="color: #fd2b34;">! 是否删除</h2>
@@ -143,35 +168,36 @@
                 <div class="setting_body_div">
                     <div class="setting_body_left">
                         <p>分成占比</p>
-                        <input type="number" id="ratio" name="ratio" required="required">
+                        <input type="number" min="1" max="100" name="newratio" value="<%= places[0].ratio %>" oninput="if(value.length>3)value=value.slice(0,3)"  required="required">
                         <span class="input_symbol">%</span>
                     </div>
                     <div class="setting_body_right">
                         <p>损耗金额</p>
-                        <input type="number" name="loss" value="0" required="required" onfocus="if (value =='0'){value =''}" onblur="if (value ==''){value='0'}">
+                        <input type="number" name="loss" value="0" min="0" required="required" onfocus="if (value =='0'){value =''}" onblur="if (value ==''){value='0'}">
                     </div>
                     <hr>
                 </div>
                 <div class="setting_body_div">
                     <div class="setting_body_left">
                         <p>礼品金额</p>
-                        <input type="number" name="gift" value="0" required="required" onfocus="if (value =='0'){value =''}" onblur="if (value ==''){value='0'}">
+                        <input type="number" name="gift" value="0" min="0" required="required" onfocus="if (value =='0'){value =''}" onblur="if (value ==''){value='0'}">
                     </div>
                     <div class="setting_body_right">
                         <p>礼品归属</p>
                         <select name="belong">
-                            <option value="0">己方</option>
-                            <option value="1">对方</option>
+                            <option value="true">己方</option>
+                            <option value="">对方</option>
                         </select>
                     </div>
                     <hr>
                 </div>
+                <input type="hidden" name="index" value="<%= machines.length %>" readonly>
                 <div class="setting_body_table">
-                    <table class="customers">
+                    <table class="customers  addsale_table">
                         <tr>
-                            <th>机器编号</th>
                             <th class="hidden_th">机器id</th>
                             <th class="hidden_th">旧数额</th>
+                            <th>机器编号</th>
                             <th>新数额</th>
                         </tr>
                         <% for(let i = 0;i< machines.length;i++){ if (i%2 == 0){ %>
@@ -179,19 +205,19 @@
                             <%  }else { %>
                         <tr class="alt table_data">
                             <% } %>
+                            <td class="hidden_th">
+                                    <input type="text" name="machineId" value="<%= machines[i]._id %>" readonly>
+                                </td>
+                                <td class="hidden_th">
+                                    <input type="number" name="oidInitial" value="<%= machines[i].initialNo %>" readonly>
+                                </td>
                             <td><%= machines[i].machineNo %></td>
-                            <td class="hidden_th">
-                                <input type="text" name="machineId" value="<%= machines[i]._id %>" readonly>
-                            </td>
-                            <td class="hidden_th">
-                                <input type="number" name="oidInitial" value="<%= machines[i].initialNo %>" readonly>
-                            </td>
-                            <td><input type="number" name="initial" required="required"></td>
+                            <td><input type="number" name="initial" min="1" required="required"></td>
                         </tr>
                         <% } %>
                     </table>
                 </div>
-                <input type="submit" id="postPale" onclick="return false" value="添加">
+                <input type="submit" value="添加">
             </form>
         </div>
     </div>
