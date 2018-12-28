@@ -95,7 +95,8 @@ console.log(typeof(true) != 'boolean');
 });*/
 
 
-//spread(function(a1,a2,a3){});a1,a2,a3 分别对应了三个异步方法对应的返回值
+/* spread(function(a1,a2,a3){});a1,a2,a3 分别对应了三个异步方法的返回值,
+spread作用是分散promise结果 */
 function add() {
     Promise.all([areas.save()]).spread(function (user) {
         places.areaId = user;

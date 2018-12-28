@@ -11,7 +11,7 @@ input[type="number"] { -moz-appearance: textfield;}
 
 /*登录注册*/
 .login-background{
-    background: url(../images/h.jpg)repeat;
+    background: url(../images/d.jpg)repeat;
     background-size:100% 100%;
     height: 100%;
     width: 100%;
@@ -404,6 +404,10 @@ input[type="number"] { -moz-appearance: textfield;}
     color: #922a0a;
     font-weight: 600;
 }
+
+/*聊天页*/
+
+
 
 /*setting页*/
 .subject{
