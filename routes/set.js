@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const sha1 = require('sha1');
 
 const UserModel = require('../proxy/users');
 const PlaceModel = require('../proxy/places');
@@ -97,6 +98,55 @@ router.post('/add-machine',checkLogin,function (req, res, next) {
             next(e)
         });
     });
+});
+
+// POST /setting/add_secondaryUser 添加子用户
+router.post('/add-secondaryUser',checkLogin,function (req, res, next) {
+    const name = req.session.user.name;
+    const username = req.fields.name;
+    let password = req.fields.password;
+    const repassword = req.fields.repassword;
+
+    try {
+        if (!(name.length >= 1 && name.length <= 10 )){
+            throw new Error('名字请限制在 1-10 个字符')
+        }
+        if (password.length < 6){
+            throw new Error('密码至少6个字符')
+        }
+        if (password !== repassword){
+            throw new Error('两次输入的密码不一致')
+        }
+    } catch(e) {
+        req.flash('error', e.message);
+        return res.redirect('/set')
+    }
+
+    //密码加密
+    password = sha1(password);
+    let secondaryUser = {
+        username: username,
+        userpass: password
+    };
+
+    UserModel.getUser(username).then(function (user) {
+        if (user) {
+            req.flash('error', '用户名被占用');
+            res.redirect('/set');
+        }else{
+            UserModel.addSecondaryUser(name,secondaryUser)
+            .then(function (result) {
+                req.flash('success', '注册成功');
+                res.redirect('/set');
+            }).catch(function (e) {
+                if (e.message.match('duplicate key')){
+                    req.flash('error', '注册失败');
+                    res.redirect('/set');
+                }
+                next(e)
+            })
+        }
+    })
 });
 
 

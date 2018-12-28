@@ -45,7 +45,29 @@ var timemin = year+'-01-01';
 var timemax = year+'-12-31';
 
 
-console.log(typeof(true) != 'boolean');
+// console.log(typeof(true) != 'boolean');
+
+const g = {
+    a:1,
+    b:2,
+    c:3
+};
+
+console.log(coun(g));
+
+function coun(obj) {
+    var objType = typeof obj;
+        if(objType == "string"){
+            return obj.length;
+        }else if(objType == "object"){
+            var objLen = 0;
+            for(var i in obj){
+                objLen++;
+            }
+            return objLen;
+        }
+        return false;
+}
 
 
 

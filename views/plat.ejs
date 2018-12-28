@@ -15,7 +15,14 @@
       </a>
     </div>
   </div>
-
+  <div class="menu_message">
+    <div class="icon">
+      <a href="#">
+        <img src="/images/message.png" alt="聊天室">
+        <span>聊天室</span>
+      </a>
+    </div>
+  </div>
   <div class="menu_bottom">
     <div class="icon">
       <a href="/set">
@@ -76,5 +83,10 @@
     <p>机&emsp;器: <%= machines[0] %> / <%= machines[1] %></p>
   <% }%>
 </div>
+
+<div class="chat_div">
+    <iframe id="iframe" src="http://localhost:3000/chat" frameborder="1" scrolling="no"></iframe>
+</div>
+
 <%- include('components/platJS') %>
 <%- include('footer') %>

@@ -1,0 +1,172 @@
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+var username = JSON.parse('<%- JSON.stringify(username) %>');
+var userid = JSON.parse('<%- JSON.stringify(userid) %>');
+var room = JSON.parse('<%- JSON.stringify(room) %>');
+var onelogin = true;
+var index = 0;
+var site = 1;
+
+
+$(document).keydown(function(event){ //键盘事件
+    if(event.keyCode == 13){//13代表回车          
+        $(".send").click();//触发点击           
+    } 
+});  
+
+$('.send').mousedown(function(){
+    $(this).css({'background':"#007aff", 'color':"#ffffff"});
+})
+
+$('.send').mouseup(function(){
+    $(this).css({'background':"#e8e8e8",'color':"#007aff"});
+})
+
+window.onload = function () {
+    var userInfo = {
+            'userid': userid,
+            'username': username,
+            'room': room
+        };
+
+    var socket = io.connect('http://localhost:3000');
+
+    socket.emit('login',userInfo);
+
+    socket.on('login',function(data){
+        updatedMsg(data, 'login');
+    });
+    socket.on('logout',function(data){
+        updatedMsg(data, 'logout');
+    });
+    
+    socket.on('message', function (data) {
+        if(data.username == username){
+            var MsgHtml='<section class="user clearfix">'
+                        +'<span>'+data.username+'</span>'
+                        +'<div>'+data.content+'</div>'
+                        +'</section>';
+        }else{
+            var MsgHtml='<section class="server clearfix">'
+                        +'<span>'+data.username+'</span>'
+                        +'<div>'+data.content+'</div>'
+                        +'</section>';
+        }
+        $(".chat-body").append(MsgHtml);
+        // $('.chat-body').scrollTop(999999);
+        $('.chat-body').scrollTop( $('.chat-body')[0].scrollHeight); 
+    })
+
+    socket.on('getcontent', function (data) {
+        var chatRecords = data.chatRecords;
+        var subscript = data.index;
+        var MsgHtml = ''
+        for (var i = 0; i < chatRecords.length; i++) {
+            if (chatRecords[i].username == username) {
+                MsgHtml += '<section class="user clearfix">'
+                    + '<span>' + chatRecords[i].username + '</span>'
+                    + '<div>' + chatRecords[i].content + '</div>'
+                    + '</section>';
+            } else {
+                MsgHtml += '<section class="server clearfix">'
+                    + '<span>' + chatRecords[i].username + '</span>'
+                    + '<div>' + chatRecords[i].content + '</div>'
+                    + '</section>';
+            }
+        }
+        $(".getcontent").after(MsgHtml);
+        if (subscript <= 0) {
+            $(".getcontent").css("display", "none");
+            index = subscript;
+        } else {
+            index = subscript - 1;
+        }
+
+        let si = '#site' + (site - 1);
+        $(".chat-body").animate({ scrollTop:$(".chat-body").scrollTop() + $(si).offset().top - $(".chat-body").offset().top},500);  
+    })
+
+    $(".send").click(function () {
+        var content = $("input[name='msg']").val();
+        if(content){
+            let data = {
+                'username': username,
+                'content': content,
+                'room':room 
+            }
+            socket.emit('message',data);
+            $("input[name='msg']").val('');
+        }
+    })
+
+    $(".getcontent").click(function () {
+        var tt = $(".chat-body").children("section").get(0);
+        let si = 'site' + site;
+        $(tt).attr("id", si);
+        socket.emit('getcontent', {"room": room, "index":index, "userid": userid});
+        site++;
+    })
+};
+
+function updatedMsg(data, state) {
+    var onlineUser = data.onlineUser;
+    var rooms = data.room;
+
+    if(state == 'login'){
+        uplineUser(onlineUser, rooms);
+        if(onelogin && data){
+            var chatRecords = data.chatRecords;
+            if (data.index > 0){
+                $(".getcontent").css("display","block");
+                index = data.index - 1;
+            }
+            for(var i=0; i < chatRecords.length;i++){
+                if(chatRecords[i].username == username){
+                    var MsgHtml='<section class="user clearfix">'
+                                +'<span>'+chatRecords[i].username+'</span>'
+                                +'<div>'+chatRecords[i].content+'</div>'
+                                +'</section>';
+                }else{
+                    var MsgHtml='<section class="server clearfix">'
+                                +'<span>'+chatRecords[i].username+'</span>'
+                                +'<div>'+chatRecords[i].content+'</div>'
+                                +'</section>';
+                }
+                $(".chat-body").append(MsgHtml);
+            }
+        }
+        onelogin = false;
+    }
+
+    if(state == 'logout'){
+        uplineUser(onlineUser, rooms);
+    }
+};
+
+function uplineUser(onlineUser,rooms){
+    var lintUser = '';
+    if(rooms == room){
+        for(key in onlineUser){
+            lintUser += '<p>'+ onlineUser[key] +'</p>'
+        }
+        $(".userlist").empty();
+        $(".userlist").append(lintUser);
+        $(".onlienCount").text("在线列表("+coun(onlineUser)+")");
+    }
+}
+
+function coun(obj) {
+    var objType = typeof obj;
+        if(objType == "string"){
+            return obj.length;
+        }else if(objType == "object"){
+            var objLen = 0;
+            for(var i in obj){
+                objLen++;
+            }
+            return objLen;
+        }
+        return false;
+}
+
+</script>

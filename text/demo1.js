@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
+const fs = require('fs');
+const path = require('path');
+const moment = require('moment');
 const Promise = require('bluebird');
 const User = require('../models/mongo').User;
 const Place = require('../models/mongo').Place;
@@ -37,7 +40,7 @@ var author = '5b518020c15b081ab08e624c';
 var areaid = [ObjectId('5b518020c15b081ab08e6250'),ObjectId('5b518020c15b081ab08e624f'),
     ObjectId('5b518020c15b081ab08e624e'),ObjectId('5b518020c15b081ab08e624d'),];
 
-text = [
+const text = [
     { $match:{areaId:{$in:areaid}}},
     { $project:{ "year":{$year:"$date"},saleroom:1,gift:1,loss:1,areaId:1}},
     { $match: { "year": (new Date()).getFullYear()}},
@@ -52,12 +55,49 @@ const area = [
     { _id:'5b518020c15b081ab08e624d', areaname: '东方区' }
 ];
 
+
 var areaid1 = [ObjectId('5b518020c15b081ab08e6250')];
 
-PlaceModel.getPlaceTime(areaid).then(function(docs){
+
+
+const ap = path.join(__dirname, "../tools/content/xiao.txt");
+
+/* fs.readFile(ap, 'utf8', function (err, data) {
+    if (err) {
+        console.log(err);
+    } else {
+        let text = '';
+        let arr = data.split("\r\n");
+        arr.pop();
+        for (let i = 0; i < arr.length; i++) {
+            let ss = "第" + (i+1) + "句";
+            let nowdata = JSON.parse(arr[i]);
+            nowdata.content = ss;
+            text += JSON.stringify(nowdata) + '\r\n';
+        }
+        fs.writeFile(ap, text, { flag:"w"},function (err) {
+            if (err) { console.log(err) }
+            console.log('ko')
+        })
+    }
+}) */
+
+
+/* if(a[0].hasOwnProperty('a')){
+    console.log('have text');
+}else(
+    console.log('not text')
+) */
+
+
+/* User.findOne({ $or: [{'secondaryUser.username':'xiao'},{'name':'qq'}] }).then(function (data) {
+    console.log(data);
+})  */
+
+/* PlaceModel.getPlaceTime(areaid).then(function(docs){
     var data = dataTreating.replaceAreaid(area,docs);
     console.log(data);
-});
+}); */
 
 /* const p = '123.12312,124.151';
 const arr = p.split(",").map(function (val) {

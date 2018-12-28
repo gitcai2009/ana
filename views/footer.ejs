@@ -10,6 +10,11 @@
         $(".button_two").click(function(){
             $(".area_form").slideUp();
         });
+
+        $(".menu_message").click(function () {
+            $(".chat_div").slideToggle();
+            $('#iframe').contents().find('.chat-body').scrollTop(99999);
+        });
     });
 </script>
 </body>

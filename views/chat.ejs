@@ -1,29 +1,26 @@
 <%- include('header') %>
-
-<div class="main">
-    <div class="main-top">
+<div class="chat">
+    <div class="chat-top">
         聊天室
     </div>
 
-    <div class="main-left">
-        <span></span>
-        <section class="chatRoomInfo">
-            <div class="info">
-                
-            </div>
-        </section>
+    <div class="chat-left">
+        <span class="onlienCount"></span>
+        <div class="userlist"></div>
     </div>
 
-    <div class="main-body">
-
+    <div class="chat-body">
+        <div class="getcontent">
+            <span>获取更多聊天记录</span>
+        </div>
     </div>    
     
-    <div class="main-footer clearfix">
-        <div class="input">
+    <div class="chat-footer">
+        <div class="chat-input">
             <input type="text" name="msg" id="msg" value="" />
         </div>
         <button type="button" class="send">发送</button>
     </div>
 </div>
-
+<%- include('components/chatJS') %>
 <%- include('footer') %>

@@ -1,7 +1,7 @@
 module.exports = {
     post:3000,
     session: {
-        secret: 'analyze',
+        secret: 'zheshimimi',
         key: 'analyze',
         //30天
         // maxAge: 2592000000

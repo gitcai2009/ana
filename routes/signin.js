@@ -25,17 +25,35 @@ router.post('/', checkNotLogin, function (req, res, next) {
 
     UserModel.getUser(name)
         .then(function (user) {
+            let pw = sha1(password);
+            let array = user.secondaryUser;
+            let secondaryUser = array.filter(function(item){
+                return item.username == name
+            });
+
             if (!user){
                 req.flash('error', '用户不存在');
                 return res.redirect('back')
             }
-            if (sha1(password) !== user.password){
-                req.flash('error', '用户名或密码错误');
-                return res.redirect('back')
+            if(name == user.name){
+                if (pw !== user.password){
+                    req.flash('error', '用户名或密码错误');
+                    return res.redirect('back')
+                }
+                user.secondaryUser = {_id:user._id, username:user.name};
+            }else{
+                if (pw !== secondaryUser[0].userpass){
+                    req.flash('error', '用户名或密码错误');
+                    return res.redirect('back')
+                }
+                user.secondaryUser = {_id:secondaryUser[0]._id, username:secondaryUser[0].username};
             }
+
             req.flash('success', '登录成功');
-            delete user.password;
-            req.session.user = user;
+            user.password = null;
+            result = user;
+            delete result.password;
+            req.session.user = result;
             res.redirect('/plat')
     }).catch(next)
 

@@ -6,6 +6,10 @@ const UserSchema = new Schema({
     password: {type: 'string', required:true},
     area:[{
         areaname:{type: 'string'}
+    }],
+    secondaryUser:[{
+        username: { type: 'string'},
+        userpass:{type: 'string'}
     }]
 });
 

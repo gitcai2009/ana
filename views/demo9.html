@@ -24,16 +24,25 @@
             color: rgb(230, 233, 236);
             font-size: 1.2em;
             line-height: 30px;
-            text-align: center;
+            /* text-align: center; */
+            text-indent: 15px;
         }
         .main-left{
             position: absolute;
             top: 30px;
             width: 180px;
             bottom: 0;
-            background-color: rgb(169, 218, 201);
-            border-right: 2px solid #353c44;
+            background-color: rgb(204, 219, 214);
+            border-right: 1px solid #353c44;
+            box-shadow: 2px 0 3px #666666;
             z-index: 99800;
+        }
+        .main-left span{
+            float: right;
+            width: 100%;
+            padding: 5px;
+            text-align: right;
+            background-color: rgb(178, 209, 199);
         }
         .main-body{
             background-color: #efeff4;
@@ -46,7 +55,7 @@
             overflow-y: scroll;
         }
         .main-body::-webkit-scrollbar {
-            width: 3px;
+            width: 1px;
             /* height: 3px; */
         }
         .main-body::-webkit-scrollbar-thumb {
@@ -95,10 +104,6 @@
             outline: none;
         }
 
-        .send:hover{
-            background-color: #007aff;
-            color: #FFFFFF;
-        }
 
     </style>
 </head>
@@ -110,7 +115,7 @@
         </div>
 
         <div class="main-left">
-            <span></span>
+            <span>2/16</span>
             <section class="chatRoomInfo">
                 <div class="info">
                     
@@ -132,9 +137,23 @@
 
 <script type="text/javascript">
 
+ $(document).keydown(function(event){ //键盘事件
+    if(event.keyCode == 13){//13代表回车          
+        $(".send").click();//触发点击           
+    } 
+});  
+
  $(document).ready(function(){ 
-     $('.main-body').scrollTop( $('.main-body')[0].scrollHeight); 
-     });
+    $('.main-body').scrollTop( $('.main-body')[0].scrollHeight); 
+});
+
+$('.send').mousedown(function(){
+    $(this).css({'background':"#007aff", 'color':"#ffffff"});
+})
+
+$('.send').mouseup(function(){
+    $(this).css({'background':"#e8e8e8",'color':"#007aff"});
+})
 
 
 </script>
